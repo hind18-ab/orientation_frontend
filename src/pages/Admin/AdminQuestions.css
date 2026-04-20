@@ -1,0 +1,121 @@
+.admin-questions {
+    padding: 40px;
+    background: #f8fafc;
+    min-height: calc(100vh - 80px);
+}
+
+.questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+}
+
+.question-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.question-info .icon {
+    color: var(--primary);
+}
+
+.options-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-left: 40px;
+}
+
+.option-badge {
+    background: #eff6ff;
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #dbeafe;
+}
+
+/* Question Modal Specifics */
+.question-modal {
+    max-width: 800px !important;
+}
+
+.options-editor {
+    margin-top: 32px;
+    background: #f8fafc;
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.option-edit-row {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 80px 44px !important;
+    gap: 16px !important;
+    margin-bottom: 16px;
+    align-items: center;
+    width: 100%;
+}
+
+.option-edit-row > input, 
+.option-edit-row > select {
+    width: 100% !important;
+    min-width: 0;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border) !important;
+    background: #f8fafc !important;
+    font-family: inherit;
+    font-size: 14px;
+    height: 44px; /* Hauteur fixe pour aligner avec le bouton X */
+    transition: all 0.2s;
+}
+
+.option-edit-row > input:focus, 
+.option-edit-row > select:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    background: white !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
+}
+
+.btn-remove {
+    background: #fff1f2;
+    border: 1px solid #fecaca;
+    color: #e11d48;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.btn-remove:hover {
+    background: #ffe4e6;
+    color: #be123c;
+    transform: scale(1.05);
+}
+
+.points-input {
+    text-align: center;
+}
