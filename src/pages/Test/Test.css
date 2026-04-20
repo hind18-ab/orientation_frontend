@@ -1,0 +1,125 @@
+.test-page {
+    min-height: calc(100vh - 140px);
+    background: var(--background);
+    padding: 60px 0;
+}
+
+.test-container {
+    max-width: 800px;
+}
+
+.test-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.test-header h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.progress-bar-container {
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.question-card {
+    background: var(--surface);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 32px;
+}
+
+.question-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: var(--text);
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.option-item {
+    padding: 20px 24px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.option-item:hover {
+    border-color: var(--primary);
+    background: #eff6ff;
+}
+
+.option-item.selected {
+    border-color: var(--primary);
+    background: #eff6ff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.option-item input {
+    display: none;
+}
+
+.option-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.check-icon {
+    position: absolute;
+    right: 24px;
+    color: var(--primary);
+}
+
+.test-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.loading, .no-questions {
+    text-align: center;
+    padding: 100px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
