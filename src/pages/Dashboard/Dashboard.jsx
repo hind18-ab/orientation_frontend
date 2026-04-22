@@ -197,6 +197,10 @@ const Dashboard = () => {
                                 </div>
                             </div>
 
+                            <Link to="/profile" className="btn btn-outline btn-sm" style={{ width: '100%', justifyContent: 'center', marginTop: '16px' }}>
+                                <UserIcon size={16} /> Gérer mon profil
+                            </Link>
+
                             {chartData && (
                                 <div className="chart-container">
                                     <Radar 

@@ -9,6 +9,7 @@ import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Test from './pages/Test/Test';
 import Results from './pages/Results/Results';
+import Profile from './pages/Dashboard/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/test" element={<Test />} />
                     <Route path="/results" element={<Results />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Route>
 
                 {/* Admin Protected Routes */}

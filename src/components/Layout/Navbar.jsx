@@ -47,6 +47,9 @@ const Navbar = () => {
                                         <Link to="/dashboard" onClick={() => setIsDropdownOpen(false)}>
                                             <LayoutDashboard size={16} /> Dashboard
                                         </Link>
+                                        <Link to="/profile" onClick={() => setIsDropdownOpen(false)}>
+                                            <User size={16} /> Mon Profil
+                                        </Link>
                                         <button onClick={handleLogout} className="logout-btn">
                                             <LogOut size={16} /> Déconnexion
                                         </button>
