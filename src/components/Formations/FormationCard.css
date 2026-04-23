@@ -20,73 +20,56 @@
     flex-grow: 1;
 }
 
-.formation-type {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
+.formation-icon {
+    width: 48px;
+    height: 48px;
     background: #eff6ff;
     color: #2563eb;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
 }
 
 .formation-title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #111827;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
     line-height: 1.4;
 }
 
-.formation-institution {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 1rem;
-}
-
-.formation-meta {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.75rem;
-    color: #4b5563;
-}
-
 .formation-description {
-    font-size: 0.875rem;
-    color: #4b5563;
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 0.9375rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
 }
 
 .formation-footer {
-    padding: 1rem 1.25rem;
+    padding: 1.25rem;
     border-top: 1px solid #f3f4f6;
-    background: #f9fafb;
 }
 
-.formation-link {
+.formation-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    color: #2563eb;
+    background: #2563eb;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 600;
+    transition: all 0.2s ease;
+    width: 100%;
 }
 
-.formation-link:hover {
-    color: #1d4ed8;
+.formation-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }

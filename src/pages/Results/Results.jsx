@@ -44,16 +44,8 @@ const Results = () => {
     }, []);
 
     useEffect(() => {
-        if (result && result.primary_domain) {
-            const fetchFormations = async () => {
-                try {
-                    const response = await api.get(`/formations/domain/${result.primary_domain.id}`);
-                    setFormations(response.data);
-                } catch (error) {
-                    console.error('Error fetching formations', error);
-                }
-            };
-            fetchFormations();
+        if (result && result.recommended_formations) {
+            setFormations(result.recommended_formations);
         }
     }, [result]);
 
