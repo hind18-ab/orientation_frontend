@@ -16,6 +16,7 @@ import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminDomains from './pages/Admin/AdminDomains';
 import AdminQuestions from './pages/Admin/AdminQuestions';
+import AdminFormations from './pages/Admin/AdminFormations';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -55,6 +56,7 @@ function App() {
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/domains" element={<AdminDomains />} />
                     <Route path="/admin/questions" element={<AdminQuestions />} />
+                    <Route path="/admin/formations" element={<AdminFormations />} />
                 </Route>
             </Route>
         </Routes>

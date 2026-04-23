@@ -10,8 +10,9 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Award, Share2, Download, RefreshCw } from 'lucide-react';
+import { Award, Share2, Download, RefreshCw, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import FormationCard from '../../components/Formations/FormationCard';
 import './Results.css';
 
 ChartJS.register(
@@ -26,6 +27,7 @@ ChartJS.register(
 const Results = () => {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [formations, setFormations] = useState([]);
 
     useEffect(() => {
         const fetchResult = async () => {
@@ -40,6 +42,20 @@ const Results = () => {
         };
         fetchResult();
     }, []);
+
+    useEffect(() => {
+        if (result && result.primary_domain) {
+            const fetchFormations = async () => {
+                try {
+                    const response = await api.get(`/formations/domain/${result.primary_domain.id}`);
+                    setFormations(response.data);
+                } catch (error) {
+                    console.error('Error fetching formations', error);
+                }
+            };
+            fetchFormations();
+        }
+    }, [result]);
 
     if (loading) return <div className="loading">Chargement de vos résultats...</div>;
 
@@ -104,6 +120,26 @@ const Results = () => {
                             <Radar data={chartData} options={chartOptions} />
                         </div>
                     </div>
+                </div>
+
+                <div className="recommended-formations card">
+                    <div className="section-header">
+                        <BookOpen className="section-icon" size={24} />
+                        <h3>Formations Recommandées</h3>
+                    </div>
+                    <p className="section-subtitle">Basé sur votre affinité pour le domaine : <strong>{result.primary_domain.name}</strong></p>
+                    
+                    {formations.length > 0 ? (
+                        <div className="formations-grid">
+                            {formations.map(formation => (
+                                <FormationCard key={formation.id} formation={formation} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="no-formations">
+                            <p>Aucune formation spécifique n'est actuellement répertoriée pour ce domaine.</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="detailed-scores card">
