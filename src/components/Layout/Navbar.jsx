@@ -24,6 +24,7 @@ const Navbar = () => {
                 
                 <div className="nav-links">
                     <Link to="/" className="nav-link">Accueil</Link>
+                    <Link to="/formations" className="nav-link">Formations</Link>
                     {user ? (
                         <>
                             <Link to="/dashboard" className="nav-link">Dashboard</Link>

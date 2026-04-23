@@ -24,6 +24,19 @@ const Sidebar = () => {
                     <span>Utilisateurs</span>
                 </NavLink>
                 <div className="sidebar-divider"></div>
+                <NavLink to="/admin/formations" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <BookOpen size={20} />
+                    <span>Formations</span>
+                </NavLink>
+                <NavLink to="/admin/courses" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <BookOpen size={20} />
+                    <span>Cours</span>
+                </NavLink>
+                <NavLink to="/admin/lessons" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <BookOpen size={20} />
+                    <span>Leçons</span>
+                </NavLink>
+                <div className="sidebar-divider"></div>
                 <NavLink to="/admin/settings" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <Settings size={20} />
                     <span>Paramètres</span>

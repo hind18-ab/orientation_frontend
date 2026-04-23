@@ -13,10 +13,17 @@ import Profile from './pages/Dashboard/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
+import FormationsList from './pages/Courses/FormationsList';
+import CoursesList from './pages/Courses/CoursesList';
+import LessonView from './pages/Courses/LessonView';
+
 // Admin Pages
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminDomains from './pages/Admin/AdminDomains';
 import AdminQuestions from './pages/Admin/AdminQuestions';
+import AdminFormations from './pages/Admin/AdminFormations';
+import AdminCourses from './pages/Admin/AdminCourses';
+import AdminLessons from './pages/Admin/AdminLessons';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -43,6 +50,9 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/formations" element={<FormationsList />} />
+                <Route path="/formations/:id/courses" element={<CoursesList />} />
+                <Route path="/courses/:courseId/lessons" element={<LessonView />} />
                 
                 {/* User Protected Routes */}
                 <Route element={<ProtectedRoute />}>
@@ -57,6 +67,9 @@ function App() {
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/domains" element={<AdminDomains />} />
                     <Route path="/admin/questions" element={<AdminQuestions />} />
+                    <Route path="/admin/formations" element={<AdminFormations />} />
+                    <Route path="/admin/courses" element={<AdminCourses />} />
+                    <Route path="/admin/lessons" element={<AdminLessons />} />
                 </Route>
             </Route>
         </Routes>
