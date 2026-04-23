@@ -1,6 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, HelpCircle, Users, Settings, GraduationCap } from 'lucide-react';
+import { 
+    LayoutDashboard, 
+    Layers, 
+    HelpCircle, 
+    Users, 
+    Settings, 
+    GraduationCap, 
+    Library, 
+    BookOpen 
+} from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -12,13 +21,22 @@ const Sidebar = () => {
                     <span>Tableau de Bord</span>
                 </NavLink>
                 <NavLink to="/admin/domains" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-                    <BookOpen size={20} />
+                    <Layers size={20} />
                     <span>Domaines</span>
                 </NavLink>
                 <NavLink to="/admin/formations" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <GraduationCap size={20} />
                     <span>Formations</span>
                 </NavLink>
+                <NavLink to="/admin/courses" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <Library size={20} />
+                    <span>Cours</span>
+                </NavLink>
+                <NavLink to="/admin/lessons" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <BookOpen size={20} />
+                    <span>Leçons</span>
+                </NavLink>
+                <div className="sidebar-divider"></div>
                 <NavLink to="/admin/questions" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <HelpCircle size={20} />
                     <span>Questions</span>
@@ -26,19 +44,6 @@ const Sidebar = () => {
                 <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <Users size={20} />
                     <span>Utilisateurs</span>
-                </NavLink>
-                <div className="sidebar-divider"></div>
-                <NavLink to="/admin/formations" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-                    <BookOpen size={20} />
-                    <span>Formations</span>
-                </NavLink>
-                <NavLink to="/admin/courses" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-                    <BookOpen size={20} />
-                    <span>Cours</span>
-                </NavLink>
-                <NavLink to="/admin/lessons" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-                    <BookOpen size={20} />
-                    <span>Leçons</span>
                 </NavLink>
                 <div className="sidebar-divider"></div>
                 <NavLink to="/admin/settings" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>

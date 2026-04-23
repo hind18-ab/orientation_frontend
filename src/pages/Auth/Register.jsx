@@ -28,7 +28,17 @@ const Register = () => {
             await register(formData.name, formData.email, formData.password);
             navigate('/dashboard');
         } catch (err) {
-            setError('Une erreur est survenue lors de l\'inscription.');
+            console.error('Registration error details:', err);
+            if (err.response && err.response.data.errors) {
+                const firstError = Object.values(err.response.data.errors)[0][0];
+                setError(firstError);
+            } else if (err.response) {
+                setError(err.response.data.message || 'Une erreur est survenue lors de l\'inscription.');
+            } else if (err.request) {
+                setError('Impossible de contacter le serveur. Vérifiez que le backend est lancé.');
+            } else {
+                setError('Une erreur est survenue lors de l\'inscription.');
+            }
         }
     };
 

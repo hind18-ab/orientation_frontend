@@ -22,7 +22,14 @@ const Login = () => {
                 navigate('/dashboard');
             }
         } catch (err) {
-            setError('Identifiants invalides. Veuillez réessayer.');
+            console.error('Login error details:', err);
+            if (err.response) {
+                setError(err.response.data.message || 'Identifiants invalides. Veuillez réessayer.');
+            } else if (err.request) {
+                setError('Impossible de contacter le serveur. Vérifiez que le backend est lancé.');
+            } else {
+                setError('Une erreur est survenue lors de la connexion.');
+            }
         }
     };
 
