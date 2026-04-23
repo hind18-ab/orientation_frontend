@@ -7,7 +7,7 @@ const Footer = () => {
             <div className="container footer-grid">
                 <div className="footer-brand">
                     <h2>Orientation</h2>
-                    <p>La référence en orientation scolaire et professionnelle propulsée par l'intelligence artificielle.</p>
+                    {/* <p>La référence en orientation scolaire et professionnelle propulsée par l'intelligence artificielle.</p> */}
                 </div>
                 <div className="footer-links">
                     <h4>Plateforme</h4>

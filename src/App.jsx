@@ -22,8 +22,11 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminDomains from './pages/Admin/AdminDomains';
 import AdminQuestions from './pages/Admin/AdminQuestions';
 import AdminFormations from './pages/Admin/AdminFormations';
+<<<<<<< HEAD
 import AdminCourses from './pages/Admin/AdminCourses';
 import AdminLessons from './pages/Admin/AdminLessons';
+=======
+>>>>>>> nisrine_branch
 
 const MainLayout = () => {
     const location = useLocation();
@@ -68,8 +71,11 @@ function App() {
                     <Route path="/admin/domains" element={<AdminDomains />} />
                     <Route path="/admin/questions" element={<AdminQuestions />} />
                     <Route path="/admin/formations" element={<AdminFormations />} />
+<<<<<<< HEAD
                     <Route path="/admin/courses" element={<AdminCourses />} />
                     <Route path="/admin/lessons" element={<AdminLessons />} />
+=======
+>>>>>>> nisrine_branch
                 </Route>
             </Route>
         </Routes>

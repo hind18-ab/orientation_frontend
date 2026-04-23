@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, HelpCircle, Users, Settings } from 'lucide-react';
+import { LayoutDashboard, BookOpen, HelpCircle, Users, Settings, GraduationCap } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -14,6 +14,10 @@ const Sidebar = () => {
                 <NavLink to="/admin/domains" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <BookOpen size={20} />
                     <span>Domaines</span>
+                </NavLink>
+                <NavLink to="/admin/formations" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <GraduationCap size={20} />
+                    <span>Formations</span>
                 </NavLink>
                 <NavLink to="/admin/questions" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <HelpCircle size={20} />
