@@ -35,6 +35,14 @@
     border-right: 3px solid var(--primary);
 }
 
+.sidebar-item.ai-link {
+    color: #6366f1;
+}
+
+.sidebar-item.ai-link:hover {
+    background: #f5f3ff;
+}
+
 .sidebar-divider {
     height: 1px;
     background: var(--border);

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
-import { Plus, Edit2, Trash2, HelpCircle, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, HelpCircle, X, Sparkles, RefreshCw, Save } from 'lucide-react';
 import './AdminQuestions.css';
 
 const AdminQuestions = () => {
     const [questions, setQuestions] = useState([]);
     const [domains, setDomains] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [isSavingAi, setIsSavingAi] = useState(false);
+    const [aiPreview, setAiPreview] = useState([]);
+    const [aiQuestionCount, setAiQuestionCount] = useState(3);
     const [isEditing, setIsEditing] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState({
         question_text: '',
@@ -84,6 +89,37 @@ const AdminQuestions = () => {
         }
     };
 
+    const handleGenerateAi = async () => {
+        setIsGenerating(true);
+        try {
+            const response = await api.post('/ai/generate-questions', { count: aiQuestionCount });
+            setAiPreview(response.data.questions);
+            setIsAiModalOpen(true);
+        } catch (error) {
+            console.error('Error generating AI questions', error);
+            alert('Erreur lors de la génération IA');
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const handleSaveAi = async () => {
+        setIsSavingAi(true);
+        try {
+            await api.post('/ai/save-questions', {
+                domain_id: domains[0]?.id, // Using first domain as fallback if needed, but AiController should handle it
+                questions: aiPreview
+            });
+            setIsAiModalOpen(false);
+            fetchQuestions();
+            setAiPreview([]);
+        } catch (error) {
+            console.error('Error saving AI questions', error);
+        } finally {
+            setIsSavingAi(false);
+        }
+    };
+
     return (
         <div className="admin-questions">
             <header className="admin-header">
@@ -91,9 +127,30 @@ const AdminQuestions = () => {
                     <h1>Gestion des Questions</h1>
                     <p>Configurez les questions du test d'orientation et leurs points.</p>
                 </div>
-                <button className="btn btn-primary" onClick={handleAddNew}>
-                    <Plus size={20} /> Ajouter une Question
-                </button>
+                <div className="header-actions">
+                    <div className="ai-controls">
+                        <input 
+                            type="number" 
+                            min="1" 
+                            max="10" 
+                            value={aiQuestionCount}
+                            onChange={(e) => setAiQuestionCount(parseInt(e.target.value))}
+                            className="ai-count-input"
+                            title="Nombre de questions à générer"
+                        />
+                        <button 
+                            className="btn btn-ai" 
+                            onClick={handleGenerateAi}
+                            disabled={isGenerating}
+                        >
+                            {isGenerating ? <RefreshCw className="spin" size={18} /> : <Sparkles size={18} />}
+                            Générer avec IA
+                        </button>
+                    </div>
+                    <button className="btn btn-primary" onClick={handleAddNew}>
+                        <Plus size={20} /> Ajouter une Question
+                    </button>
+                </div>
             </header>
 
             <div className="questions-list">
@@ -123,6 +180,49 @@ const AdminQuestions = () => {
                     </div>
                 ))}
             </div>
+
+            {isAiModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal ai-preview-modal card">
+                        <div className="modal-header">
+                            <h2>Prévisualisation IA</h2>
+                            <button className="btn-close" onClick={() => setIsAiModalOpen(false)}>
+                                <X size={24} />
+                            </button>
+                        </div>
+                        
+                        <div className="ai-questions-preview">
+                            <p className="helper-text">Ces questions couvrent tous les domaines de la plateforme.</p>
+                            {aiPreview.map((q, idx) => (
+                                <div key={idx} className="preview-item">
+                                    <h4>{q.text}</h4>
+                                    <div className="preview-options">
+                                        {q.options.map((opt, oIdx) => (
+                                            <div key={oIdx} className="preview-opt">
+                                                <span className="dot"></span>
+                                                <span className="text">{opt.text}</span>
+                                                <span className="domain-label">{opt.domain_name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="modal-footer">
+                            <button className="btn btn-outline" onClick={() => setIsAiModalOpen(false)}>Annuler</button>
+                            <button 
+                                className="btn btn-primary btn-ai-save" 
+                                onClick={handleSaveAi}
+                                disabled={isSavingAi}
+                            >
+                                {isSavingAi ? <RefreshCw className="spin" size={18} /> : <Save size={18} />}
+                                Valider et Ajouter tout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {isModalOpen && (
                 <div className="modal-overlay">

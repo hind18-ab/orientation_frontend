@@ -1,3 +1,129 @@
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-ai {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 0 12px 12px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.ai-controls {
+    display: flex;
+    align-items: center;
+}
+
+.ai-count-input {
+    width: 60px;
+    height: 44px;
+    border: 2px solid #6366f1;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    padding: 0 10px;
+    font-weight: 700;
+    color: #4f46e5;
+    text-align: center;
+    outline: none;
+}
+
+.btn-ai:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.ai-preview-modal {
+    max-width: 800px !important;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-questions-preview {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.helper-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #6366f1;
+}
+
+.preview-item {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.preview-item h4 {
+    margin: 0 0 12px 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+}
+
+.preview-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.preview-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.preview-opt .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+
+.preview-opt .text {
+    flex-grow: 1;
+    color: #475569;
+}
+
+.domain-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #6366f1;
+    text-transform: uppercase;
+    background: #eef2ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Original styles below */
 .admin-questions {
     padding: 40px;
     background: #f8fafc;

@@ -24,6 +24,7 @@ import AdminQuestions from './pages/Admin/AdminQuestions';
 import AdminFormations from './pages/Admin/AdminFormations';
 import AdminCourses from './pages/Admin/AdminCourses';
 import AdminLessons from './pages/Admin/AdminLessons';
+import AdminAiGenerator from './pages/Admin/AdminAiGenerator';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -70,6 +71,7 @@ function App() {
                     <Route path="/admin/formations" element={<AdminFormations />} />
                     <Route path="/admin/courses" element={<AdminCourses />} />
                     <Route path="/admin/lessons" element={<AdminLessons />} />
+                    <Route path="/admin/ai-generator" element={<AdminAiGenerator />} />
                 </Route>
             </Route>
         </Routes>

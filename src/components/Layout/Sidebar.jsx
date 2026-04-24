@@ -8,7 +8,8 @@ import {
     Settings, 
     GraduationCap, 
     Library, 
-    BookOpen 
+    BookOpen,
+    Sparkles 
 } from 'lucide-react';
 import './Sidebar.css';
 
