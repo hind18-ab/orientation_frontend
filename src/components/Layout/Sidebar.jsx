@@ -36,6 +36,10 @@ const Sidebar = () => {
                     <BookOpen size={20} />
                     <span>Leçons</span>
                 </NavLink>
+                <NavLink to="/admin/quizzes" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <HelpCircle size={20} />
+                    <span>Quizzes</span>
+                </NavLink>
                 <div className="sidebar-divider"></div>
                 <NavLink to="/admin/settings" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <Settings size={20} />

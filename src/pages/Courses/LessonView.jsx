@@ -101,10 +101,28 @@ const LessonView = () => {
                         )}
 
                         {activeLesson.content && (
-                            <div className="content-box glass-card" style={{ padding: '2rem', borderRadius: '12px', lineHeight: '1.7', color: '#333', fontSize: '1.05rem', whiteSpace: 'pre-wrap' }}>
+                            <div className="content-box glass-card" style={{ padding: '2rem', borderRadius: '12px', lineHeight: '1.7', color: '#333', fontSize: '1.05rem', whiteSpace: 'pre-wrap', marginBottom: '2rem' }}>
                                 {activeLesson.content}
                             </div>
                         )}
+
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}>
+                            <button 
+                                onClick={async () => {
+                                    try {
+                                        await api.post(`/lessons/${activeLesson.id}/complete`);
+                                        alert('Félicitations ! Leçon terminée.');
+                                    } catch (err) {
+                                        console.error(err);
+                                    }
+                                }}
+                                className="btn btn-primary"
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '1rem 2rem' }}
+                            >
+                                <CheckCircle size={20} />
+                                Marquer comme terminée
+                            </button>
+                        </div>
                     </motion.div>
                 ) : (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: '#888' }}>

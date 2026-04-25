@@ -1,0 +1,27 @@
+name: React CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Permet de déclencher le pipeline manuellement
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configuration de Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    - name: Installation des dépendances
+      run: npm install
+
+    - name: Construction (Build) du projet
+      run: npm run build
