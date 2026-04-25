@@ -2,9 +2,9 @@ name: React CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "**" ]
   workflow_dispatch: # Permet de déclencher le pipeline manuellement
 
 jobs:
