@@ -24,12 +24,13 @@
 .ai-count-input {
     width: 60px;
     height: 44px;
-    border: 2px solid #6366f1;
+    border: 2px solid var(--primary);
     border-right: none;
     border-radius: 12px 0 0 12px;
     padding: 0 10px;
     font-weight: 700;
-    color: #4f46e5;
+    color: var(--primary);
+    background: var(--background);
     text-align: center;
     outline: none;
 }
@@ -56,15 +57,15 @@
     font-size: 0.9rem;
     color: var(--text-muted);
     margin-bottom: 20px;
-    background: #f8fafc;
+    background: var(--background);
     padding: 10px;
     border-radius: 8px;
-    border-left: 4px solid #6366f1;
+    border-left: 4px solid var(--primary);
 }
 
 .preview-item {
-    background: #fff;
-    border: 1px solid #e2e8f0;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
@@ -72,7 +73,7 @@
 
 .preview-item h4 {
     margin: 0 0 12px 0;
-    color: #1e293b;
+    color: var(--text);
     font-size: 1.1rem;
 }
 
@@ -86,7 +87,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #f1f5f9;
+    background: var(--background);
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -101,15 +102,15 @@
 
 .preview-opt .text {
     flex-grow: 1;
-    color: #475569;
+    color: var(--text-muted);
 }
 
 .domain-label {
     font-size: 0.7rem;
     font-weight: 700;
-    color: #6366f1;
+    color: var(--primary);
     text-transform: uppercase;
-    background: #eef2ff;
+    background: rgba(99, 102, 241, 0.1);
     padding: 2px 6px;
     border-radius: 4px;
 }
@@ -126,7 +127,7 @@
 /* Original styles below */
 .admin-questions {
     padding: 40px;
-    background: #f8fafc;
+    background: var(--background);
     min-height: calc(100vh - 80px);
 }
 
@@ -162,13 +163,13 @@
 }
 
 .option-badge {
-    background: #eff6ff;
+    background: rgba(99, 102, 241, 0.1);
     color: var(--primary);
     padding: 4px 12px;
     border-radius: 8px;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid #dbeafe;
+    border: 1px solid var(--border);
 }
 
 /* Question Modal Specifics */
@@ -178,7 +179,7 @@
 
 .options-editor {
     margin-top: 32px;
-    background: #f8fafc;
+    background: var(--background);
     padding: 24px;
     border-radius: 20px;
     border: 1px solid var(--border);
@@ -207,7 +208,8 @@
     padding: 12px 16px !important;
     border-radius: 12px !important;
     border: 1px solid var(--border) !important;
-    background: #f8fafc !important;
+    background: var(--background) !important;
+    color: var(--text) !important;
     font-family: inherit;
     font-size: 14px;
     height: 44px; /* Hauteur fixe pour aligner avec le bouton X */
@@ -218,13 +220,13 @@
 .option-edit-row > select:focus {
     outline: none !important;
     border-color: var(--primary) !important;
-    background: white !important;
+    background: var(--surface) !important;
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
 }
 
 .btn-remove {
-    background: #fff1f2;
-    border: 1px solid #fecaca;
+    background: rgba(225, 29, 72, 0.1);
+    border: 1px solid rgba(225, 29, 72, 0.2);
     color: #e11d48;
     cursor: pointer;
     display: flex;

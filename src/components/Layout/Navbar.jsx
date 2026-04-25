@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, LayoutDashboard, ClipboardList, Settings, User } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -18,17 +20,29 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="container nav-container">
-                <Link to="/" className="nav-logo">
-                    Orientation
-                </Link>
+                <div className="nav-left">
+                    <Link to="/" className="nav-logo">
+                        Orientation
+                    </Link>
+                    <div className="nav-links">
+                        <Link to="/" className="nav-link">Accueil</Link>
+                        <Link to="/formations" className="nav-link">Formations</Link>
+                        {user && (
+                            <>
+                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                                <Link to="/test" className="nav-link">Passer le Test</Link>
+                            </>
+                        )}
+                    </div>
+                </div>
                 
-                <div className="nav-links">
-                    <Link to="/" className="nav-link">Accueil</Link>
-                    <Link to="/formations" className="nav-link">Formations</Link>
+                <div className="nav-right">
+                    <button className="theme-toggle" onClick={toggleTheme} title="Changer de thème">
+                        {theme === 'light' ? <MoonStar size={20} /> : <Sun size={20} />}
+                    </button>
+
                     {user ? (
-                        <>
-                            <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                            <Link to="/test" className="nav-link">Passer le Test</Link>
+                        <div className="user-section">
                             {user.role === 'admin' && (
                                 <Link to="/admin" className="nav-link admin-badge">
                                     <Settings size={14} /> Admin
@@ -57,7 +71,7 @@ const Navbar = () => {
                                     </div>
                                 )}
                             </div>
-                        </>
+                        </div>
                     ) : (
                         <div className="auth-btns">
                             <Link to="/login" className="btn btn-outline btn-sm">Connexion</Link>

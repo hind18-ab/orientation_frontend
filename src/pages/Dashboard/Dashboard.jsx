@@ -226,10 +226,9 @@ const Dashboard = () => {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4 }}
-                            style={{ background: '#f5f3ff', padding: '24px', borderRadius: '24px', border: '1px solid #ddd6fe' }}
                         >
-                            <h4 style={{ color: 'var(--primary)', marginBottom: '12px' }}>Conseil du jour</h4>
-                            <p style={{ fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
+                            <h4 className="tips-card-title">Conseil du jour</h4>
+                            <p className="tips-card-text">
                                 Saviez-vous que 80% des carrières réussies commencent par une connaissance de soi ? Continuez à explorer !
                             </p>
                         </motion.div>

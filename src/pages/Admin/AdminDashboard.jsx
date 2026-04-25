@@ -1,69 +1,127 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import { HelpCircle, BookOpen, Users, BarChart3 } from 'lucide-react';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({ domains: 0, questions: 0, users: 0, results: 0 });
+    const [activities, setActivities] = useState({ registrations: [], results: [] });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchStats = async () => {
+        const fetchData = async () => {
             try {
-                const response = await api.get('/admin/stats');
-                setStats(response.data);
+                const [statsRes, activitiesRes] = await Promise.all([
+                    api.get('/admin/stats'),
+                    api.get('/admin/activities')
+                ]);
+                setStats(statsRes.data);
+                setActivities(activitiesRes.data);
             } catch (error) {
-                console.error('Error fetching stats', error);
+                console.error('Error fetching dashboard data', error);
+            } finally {
+                setLoading(false);
             }
         };
-        fetchStats();
+        fetchData();
     }, []);
 
     return (
-        <div className="admin-dashboard" style={{ padding: '24px' }}>
+        <div className="admin-dashboard">
             <h1>Tableau de Bord Admin</h1>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Aperçu global de la plateforme.</p>
+            <p className="subtitle" style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Aperçu global de la plateforme.</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
-                <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div style={{ padding: '12px', background: '#eff6ff', color: 'var(--primary)', borderRadius: '12px' }}>
+            <div className="stats-grid">
+                <div className="stat-card">
+                    <div className="stat-icon" style={{ background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)' }}>
                         <BookOpen size={24} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '24px', fontWeight: '800' }}>{stats.domains}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Domaines</div>
+                        <div className="stat-value">{stats.domains}</div>
+                        <div className="stat-label">Domaines</div>
                     </div>
                 </div>
-                <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div style={{ padding: '12px', background: '#fef2f2', color: '#ef4444', borderRadius: '12px' }}>
+                <div className="stat-card">
+                    <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
                         <HelpCircle size={24} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '24px', fontWeight: '800' }}>{stats.questions}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Questions</div>
+                        <div className="stat-value">{stats.questions}</div>
+                        <div className="stat-label">Questions</div>
                     </div>
                 </div>
-                <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div style={{ padding: '12px', background: '#f0fdf4', color: '#22c55e', borderRadius: '12px' }}>
+                <div className="stat-card">
+                    <div className="stat-icon" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e' }}>
                         <Users size={24} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '24px', fontWeight: '800' }}>{stats.users}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Utilisateurs</div>
+                        <div className="stat-value">{stats.users}</div>
+                        <div className="stat-label">Utilisateurs</div>
                     </div>
                 </div>
-                <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div style={{ padding: '12px', background: '#fff7ed', color: '#f97316', borderRadius: '12px' }}>
+                <div className="stat-card">
+                    <div className="stat-icon" style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316' }}>
                         <BarChart3 size={24} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '24px', fontWeight: '800' }}>{stats.results}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Tests Passés</div>
+                        <div className="stat-value">{stats.results}</div>
+                        <div className="stat-label">Tests Passés</div>
                     </div>
                 </div>
             </div>
             
-            <div className="card" style={{ marginTop: '32px' }}>
-                <h3>Activités Récentes</h3>
-                <p style={{ color: 'var(--text-muted)', marginTop: '16px' }}>Les fonctionnalités de suivi d'activité seront disponibles dans le prochain sprint.</p>
+            <div className="activities-grid" style={{ marginTop: '32px' }}>
+                <div className="activity-card">
+                    <h3>Dernières Inscriptions</h3>
+                    <div style={{ marginTop: '20px' }}>
+                        {loading ? (
+                            <p>Chargement...</p>
+                        ) : activities.registrations.length > 0 ? (
+                            <div className="activity-list">
+                                {activities.registrations.map((user, index) => (
+                                    <div key={index} className="activity-item">
+                                        <div>
+                                            <div className="activity-info-title">{user.message}</div>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{user.email}</div>
+                                        </div>
+                                        <div className="activity-date-badge">
+                                            {new Date(user.date).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p style={{ color: 'var(--text-muted)' }}>Aucune inscription.</p>
+                        )}
+                    </div>
+                </div>
+
+                <div className="activity-card">
+                    <h3>Derniers Tests Passés</h3>
+                    <div style={{ marginTop: '20px' }}>
+                        {loading ? (
+                            <p>Chargement...</p>
+                        ) : activities.results.length > 0 ? (
+                            <div className="activity-list">
+                                {activities.results.map((result, index) => (
+                                    <div key={index} className="result-item">
+                                        <div className="result-header">
+                                            <span style={{ fontWeight: '600', color: 'var(--text)' }}>{result.message}</span>
+                                            <span className="result-domain-badge">
+                                                {result.domain}
+                                            </span>
+                                        </div>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                                            {new Date(result.date).toLocaleString()}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p style={{ color: 'var(--text-muted)' }}>Aucun test complété.</p>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

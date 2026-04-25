@@ -30,7 +30,7 @@
 }
 
 .sidebar-item.active {
-    background: #eff6ff;
+    background: rgba(79, 70, 229, 0.08);
     color: var(--primary);
     border-right: 3px solid var(--primary);
 }
@@ -40,7 +40,7 @@
 }
 
 .sidebar-item.ai-link:hover {
-    background: #f5f3ff;
+    background: rgba(99, 102, 241, 0.08);
 }
 
 .sidebar-divider {

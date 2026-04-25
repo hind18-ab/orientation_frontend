@@ -120,6 +120,22 @@ const AdminQuestions = () => {
         }
     };
 
+    const handleAiQuestionChange = (qIndex, value) => {
+        const updated = [...aiPreview];
+        updated[qIndex].text = value;
+        setAiPreview(updated);
+    };
+
+    const handleAiOptionChange = (qIndex, optIndex, field, value) => {
+        const updated = [...aiPreview];
+        if (field === 'points') {
+            updated[qIndex].options[optIndex][field] = parseInt(value, 10) || 0;
+        } else {
+            updated[qIndex].options[optIndex][field] = value;
+        }
+        setAiPreview(updated);
+    };
+
     return (
         <div className="admin-questions">
             <header className="admin-header">
@@ -192,16 +208,48 @@ const AdminQuestions = () => {
                         </div>
                         
                         <div className="ai-questions-preview">
-                            <p className="helper-text">Ces questions couvrent tous les domaines de la plateforme.</p>
+                            <p className="helper-text">Vérifiez et modifiez les questions générées avant de les valider.</p>
                             {aiPreview.map((q, idx) => (
-                                <div key={idx} className="preview-item">
-                                    <h4>{q.text}</h4>
-                                    <div className="preview-options">
+                                <div key={idx} className="preview-item card" style={{ padding: '24px', marginBottom: '24px', border: '1px solid #e2e8f0' }}>
+                                    <div className="input-group">
+                                        <label>Texte de la question {idx + 1}</label>
+                                        <input 
+                                            type="text" 
+                                            value={q.text} 
+                                            onChange={(e) => handleAiQuestionChange(idx, e.target.value)} 
+                                            required 
+                                        />
+                                    </div>
+                                    
+                                    <div className="options-editor" style={{ marginTop: '20px' }}>
+                                        <div className="options-header">
+                                            <h4>Options de réponse</h4>
+                                        </div>
                                         {q.options.map((opt, oIdx) => (
-                                            <div key={oIdx} className="preview-opt">
-                                                <span className="dot"></span>
-                                                <span className="text">{opt.text}</span>
-                                                <span className="domain-label">{opt.domain_name}</span>
+                                            <div key={oIdx} className="option-edit-row" style={{ gridTemplateColumns: '2fr 1fr 80px' }}>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Texte de l'option" 
+                                                    value={opt.text}
+                                                    onChange={(e) => handleAiOptionChange(idx, oIdx, 'text', e.target.value)}
+                                                    required
+                                                />
+                                                <select 
+                                                    value={opt.domain_id || ''} 
+                                                    onChange={(e) => handleAiOptionChange(idx, oIdx, 'domain_id', e.target.value)}
+                                                    required
+                                                >
+                                                    <option value="">Domaine...</option>
+                                                    {domains.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                                                </select>
+                                                <input 
+                                                    type="number" 
+                                                    placeholder="Pts" 
+                                                    className="points-input"
+                                                    value={opt.points !== undefined ? opt.points : 5}
+                                                    onChange={(e) => handleAiOptionChange(idx, oIdx, 'points', e.target.value)}
+                                                    required
+                                                />
                                             </div>
                                         ))}
                                     </div>

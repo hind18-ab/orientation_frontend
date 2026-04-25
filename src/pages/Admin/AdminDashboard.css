@@ -1,0 +1,115 @@
+.admin-dashboard {
+    padding: 24px;
+}
+
+.stats-grid {
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 24px;
+}
+
+.stat-card {
+    display: flex; 
+    align-items: center; 
+    gap: 20px;
+    padding: 24px;
+    background: var(--surface);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+    padding: 12px; 
+    border-radius: 12px;
+}
+
+.stat-value {
+    font-size: 24px; 
+    font-weight: 800;
+    color: var(--text);
+}
+
+.stat-label {
+    color: var(--text-muted); 
+    font-size: 14px;
+}
+
+.activities-grid {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 24px; 
+    margin-top: 32px;
+}
+
+.activity-card {
+    padding: 24px;
+    background: var(--surface);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.activity-card h3 {
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.activity-list {
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px;
+}
+
+.activity-item {
+    padding: 16px; 
+    background: var(--background); 
+    border-radius: 12px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    border: 1px solid var(--border);
+}
+
+.activity-info-title {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.activity-date-badge {
+    font-size: 11px; 
+    color: var(--text-muted); 
+    background: var(--surface); 
+    padding: 4px 8px; 
+    border-radius: 6px; 
+    border: 1px solid var(--border);
+}
+
+.result-item {
+    padding: 16px; 
+    background: var(--background); 
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.result-header {
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 8px;
+}
+
+.result-domain-badge {
+    font-size: 11px; 
+    color: var(--primary); 
+    background: var(--surface); 
+    padding: 2px 8px; 
+    border-radius: 6px; 
+    font-weight: 700;
+    border: 1px solid var(--border);
+}
+
+@media (max-width: 1024px) {
+    .activities-grid {
+        grid-template-columns: 1fr;
+    }
+}

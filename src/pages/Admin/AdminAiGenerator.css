@@ -1,10 +1,10 @@
 .ai-generator-card {
-    background: white;
+    background: var(--surface);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
     margin-bottom: 2rem;
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--border);
 }
 
 .generator-form {
@@ -23,13 +23,15 @@
 .form-group label {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text);
 }
 
 .form-group select, 
 .form-group input {
     padding: 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text);
     border-radius: 8px;
     font-size: 1rem;
 }
@@ -69,15 +71,15 @@
 }
 
 .ai-message.success {
-    background: #f0fdf4;
+    background: rgba(34, 197, 94, 0.1);
     color: #166534;
-    border: 1px solid #bbf7d0;
+    border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .ai-message.error {
-    background: #fef2f2;
+    background: rgba(239, 68, 68, 0.1);
     color: #991b1b;
-    border: 1px solid #fecaca;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .preview-container {
@@ -98,16 +100,16 @@
 }
 
 .preview-card {
-    background: white;
+    background: var(--surface);
     border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
 .preview-card-header {
     padding: 1.25rem;
-    background: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -116,7 +118,7 @@
 
 .preview-card-header h3 {
     font-size: 1.1rem;
-    color: #111827;
+    color: var(--text);
     margin: 0;
 }
 
@@ -129,17 +131,18 @@
 
 .preview-option {
     padding: 0.75rem 1rem;
-    background: #f3f4f6;
+    background: var(--background);
     border-radius: 8px;
     font-size: 0.95rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid var(--border);
 }
 
 .preview-option.correct {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
     color: #166534;
 }
 

@@ -25,6 +25,9 @@ import AdminFormations from './pages/Admin/AdminFormations';
 import AdminCourses from './pages/Admin/AdminCourses';
 import AdminLessons from './pages/Admin/AdminLessons';
 import AdminAiGenerator from './pages/Admin/AdminAiGenerator';
+import AdminSettings from './pages/Admin/AdminSettings';
+import AdminUsers from './pages/Admin/AdminUsers';
+import { ThemeProvider } from './context/ThemeContext';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -46,35 +49,39 @@ const MainLayout = () => {
 
 function App() {
     return (
-        <Routes>
-            <Route element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/formations" element={<FormationsList />} />
-                <Route path="/formations/:id/courses" element={<CoursesList />} />
-                <Route path="/courses/:courseId/lessons" element={<LessonView />} />
-                
-                {/* User Protected Routes */}
-                <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/results" element={<Results />} />
-                    <Route path="/profile" element={<Profile />} />
+        <ThemeProvider>
+            <Routes>
+                <Route element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/formations" element={<FormationsList />} />
+                    <Route path="/formations/:id/courses" element={<CoursesList />} />
+                    <Route path="/courses/:courseId/lessons" element={<LessonView />} />
+                    
+                    {/* User Protected Routes */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/test" element={<Test />} />
+                        <Route path="/results" element={<Results />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </Route>
+    
+                    {/* Admin Protected Routes */}
+                    <Route element={<AdminRoute />}>
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/domains" element={<AdminDomains />} />
+                        <Route path="/admin/questions" element={<AdminQuestions />} />
+                        <Route path="/admin/formations" element={<AdminFormations />} />
+                        <Route path="/admin/courses" element={<AdminCourses />} />
+                        <Route path="/admin/lessons" element={<AdminLessons />} />
+                        <Route path="/admin/ai-generator" element={<AdminAiGenerator />} />
+                        <Route path="/admin/settings" element={<AdminSettings />} />
+                        <Route path="/admin/users" element={<AdminUsers />} />
+                    </Route>
                 </Route>
-
-                {/* Admin Protected Routes */}
-                <Route element={<AdminRoute />}>
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/admin/domains" element={<AdminDomains />} />
-                    <Route path="/admin/questions" element={<AdminQuestions />} />
-                    <Route path="/admin/formations" element={<AdminFormations />} />
-                    <Route path="/admin/courses" element={<AdminCourses />} />
-                    <Route path="/admin/lessons" element={<AdminLessons />} />
-                    <Route path="/admin/ai-generator" element={<AdminAiGenerator />} />
-                </Route>
-            </Route>
-        </Routes>
+            </Routes>
+        </ThemeProvider>
     );
 }
 

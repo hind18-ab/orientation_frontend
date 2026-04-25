@@ -21,7 +21,7 @@
 
 .progress-bar-container {
     height: 12px;
-    background: #e2e8f0;
+    background: var(--border);
     border-radius: 6px;
     position: relative;
     margin-bottom: 10px;
@@ -78,13 +78,13 @@
 
 .option-item:hover {
     border-color: var(--primary);
-    background: #eff6ff;
+    background: rgba(79, 70, 229, 0.05);
 }
 
 .option-item.selected {
     border-color: var(--primary);
-    background: #eff6ff;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    background: rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 .option-item input {

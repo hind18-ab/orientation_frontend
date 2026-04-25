@@ -19,7 +19,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #f1f5f9;
+    background: var(--border);
     padding: 6px 16px;
     border-radius: 100px;
     font-size: 13px;
@@ -151,9 +151,9 @@
     margin: 0 auto 24px;
 }
 
-.icon-box.purple { background: #f5f3ff; color: #7c3aed; }
-.icon-box.blue { background: #eff6ff; color: #2563eb; }
-.icon-box.green { background: #f0fdf4; color: #16a34a; }
+.icon-box.purple { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
+.icon-box.blue { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+.icon-box.green { background: rgba(22, 163, 74, 0.1); color: #16a34a; }
 
 .feature-card h3 {
     font-size: 22px;

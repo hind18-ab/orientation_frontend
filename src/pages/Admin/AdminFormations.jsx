@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X } from 'lucide-react';
 import api from '../../api/axios';
 
@@ -69,38 +69,43 @@ const AdminFormations = () => {
     };
 
     return (
-        <div className="admin-container" style={{ padding: '2rem' }}>
-            <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                <h2>Gestion des Formations</h2>
+        <div className="admin-container">
+            <header className="admin-header">
+                <div>
+                    <h2>Gestion des Formations</h2>
+                    <p style={{ color: 'var(--text-muted)' }}>Gérez les programmes de formation par domaine.</p>
+                </div>
                 <button className="btn btn-primary" onClick={openAddModal}>
                     <Plus size={20} /> Nouvelle Formation
                 </button>
-            </div>
+            </header>
 
             {loading ? (
                 <p>Chargement...</p>
             ) : (
-                <div className="table-container glass-card" style={{ padding: '1rem', borderRadius: '12px' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <div className="admin-table-container">
+                    <table className="admin-table">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid #eee' }}>
-                                <th style={{ padding: '1rem' }}>Domaine</th>
-                                <th style={{ padding: '1rem' }}>Titre</th>
-                                <th style={{ padding: '1rem' }}>Actions</th>
+                            <tr>
+                                <th>Domaine</th>
+                                <th>Titre</th>
+                                <th style={{ textAlign: 'right' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {formations.map((f) => (
-                                <tr key={f.id} style={{ borderBottom: '1px solid #eee' }}>
-                                    <td style={{ padding: '1rem' }}>{f.domain?.name || 'N/A'}</td>
-                                    <td style={{ padding: '1rem' }}>{f.title}</td>
-                                    <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem' }}>
-                                        <button className="btn-icon" onClick={() => openEditModal(f)} style={{ color: '#4CAF50', background: 'none', border: 'none', cursor: 'pointer' }}>
-                                            <Edit2 size={18} />
-                                        </button>
-                                        <button className="btn-icon" onClick={() => handleDelete(f.id)} style={{ color: '#F44336', background: 'none', border: 'none', cursor: 'pointer' }}>
-                                            <Trash2 size={18} />
-                                        </button>
+                                <tr key={f.id}>
+                                    <td style={{ fontWeight: '600', color: 'var(--primary)' }}>{f.domain?.name || 'N/A'}</td>
+                                    <td>{f.title}</td>
+                                    <td>
+                                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                                            <button className="btn btn-outline" style={{ padding: '8px', borderRadius: '8px' }} onClick={() => openEditModal(f)}>
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button className="btn btn-outline" style={{ padding: '8px', borderRadius: '8px', borderColor: 'rgba(239, 68, 68, 0.2)' }} onClick={() => handleDelete(f.id)}>
+                                                <Trash2 size={16} color="var(--error)" />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -109,38 +114,53 @@ const AdminFormations = () => {
                 </div>
             )}
 
-            {isModalOpen && (
-                <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="modal-content glass-card" style={{ background: '#fff', padding: '2rem', borderRadius: '12px', width: '500px', maxWidth: '90%' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                            <h3>{isEditing ? 'Modifier' : 'Ajouter'} une formation</h3>
-                            <button onClick={() => setIsModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X /></button>
-                        </div>
-                        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Domaine</label>
-                                <select required value={currentFormation.domain_id} onChange={e => setCurrentFormation({...currentFormation, domain_id: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}>
-                                    <option value="">Sélectionner un domaine</option>
-                                    {domains.map(d => (
-                                        <option key={d.id} value={d.id}>{d.name}</option>
-                                    ))}
-                                </select>
+            <AnimatePresence>
+                {isModalOpen && (
+                    <div className="modal-overlay">
+                        <motion.div 
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }} 
+                            animate={{ scale: 1, opacity: 1, y: 0 }} 
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="modal-content" 
+                            style={{ width: '550px', maxWidth: '90%' }}
+                        >
+                            <div className="modal-header">
+                                <h3>{isEditing ? 'Modifier' : 'Ajouter'} une formation</h3>
+                                <button onClick={() => setIsModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}><X /></button>
                             </div>
-                            <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Titre</label>
-                                <input type="text" required value={currentFormation.title} onChange={e => setCurrentFormation({...currentFormation, title: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }} />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Description</label>
-                                <textarea value={currentFormation.description} onChange={e => setCurrentFormation({...currentFormation, description: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }} rows="3" />
-                            </div>
-                            <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-                                {isEditing ? 'Mettre à jour' : 'Enregistrer'}
-                            </button>
-                        </form>
-                    </motion.div>
-                </div>
-            )}
+                            
+                            <form onSubmit={handleSave}>
+                                <div className="modal-body">
+                                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                        <label>Domaine</label>
+                                        <select required value={currentFormation.domain_id} onChange={e => setCurrentFormation({...currentFormation, domain_id: e.target.value})}>
+                                            <option value="">Sélectionner un domaine</option>
+                                            {domains.map(d => (
+                                                <option key={d.id} value={d.id}>{d.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                        <label>Titre de la formation</label>
+                                        <input type="text" required value={currentFormation.title} onChange={e => setCurrentFormation({...currentFormation, title: e.target.value})} placeholder="Ex: Master en Intelligence Artificielle" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Description détaillée</label>
+                                        <textarea value={currentFormation.description} onChange={e => setCurrentFormation({...currentFormation, description: e.target.value})} rows="4" placeholder="Décrivez le contenu et les objectifs..." />
+                                    </div>
+                                </div>
+                                
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={() => setIsModalOpen(false)}>Annuler</button>
+                                    <button type="submit" className="btn btn-primary" style={{ flex: 2 }}>
+                                        {isEditing ? 'Mettre à jour' : 'Enregistrer'}
+                                    </button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
