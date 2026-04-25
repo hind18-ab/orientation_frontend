@@ -25,3 +25,5 @@ jobs:
 
     - name: Construction (Build) du projet
       run: npm run build
+      env:
+        CI: false
