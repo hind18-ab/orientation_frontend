@@ -178,11 +178,11 @@ const AdminLessons = () => {
                     <div className="modal-overlay">
                         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="modal-content glass-card" style={{ width: '800px', maxWidth: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
-                                <h3 style={{ margin: 0 }}>{currentLesson.title}</h3>
+                                <h3 style={{ margin: 0 }}>{getLocalizedText(currentLesson.title)}</h3>
                                 <button onClick={() => setIsViewModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}><X /></button>
                             </div>
                             <div style={{ marginBottom: '1rem' }}>
-                                <strong>{t('admin.courses', 'Cours')} :</strong> {currentLesson.course?.title || currentLesson.course_id || 'N/A'}
+                                <strong>{t('admin.courses', 'Cours')} :</strong> {getLocalizedText(currentLesson.course?.title) || currentLesson.course_id || 'N/A'}
                             </div>
                             {currentLesson.video_url && (
                                 <div style={{ marginBottom: '1.5rem' }}>
@@ -192,7 +192,7 @@ const AdminLessons = () => {
                             <div>
                                 <strong>{t('admin.history.content', 'Contenu')} :</strong>
                                 <div style={{ marginTop: '1rem', padding: '1.5rem', background: 'var(--background)', borderRadius: '8px', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.6', color: 'var(--text)' }}>
-                                    {currentLesson.content || <em style={{ color: 'var(--text-muted)' }}>{t('admin.history.noContent', 'Aucun contenu textuel')}</em>}
+                                    {getLocalizedText(currentLesson.content) || <em style={{ color: 'var(--text-muted)' }}>{t('admin.history.noContent', 'Aucun contenu textuel')}</em>}
                                 </div>
                             </div>
                             <div style={{ marginTop: '2rem', textAlign: 'right' }}>

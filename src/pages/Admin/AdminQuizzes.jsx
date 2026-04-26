@@ -65,12 +65,22 @@ const AdminQuizzes = () => {
             const response = await api.post('/admin/quizzes/generate-ai', {
                 title: formation.title,
                 description: formation.description,
-                question_count: aiQuestionCount
+                question_count: aiQuestionCount,
+                language: i18n.language
             });
             
+            const lang = i18n.language;
+            const formattedQuestions = response.data.questions.map(q => ({
+                question_text: typeof q.question_text === 'object' ? (q.question_text[lang] || q.question_text['fr'] || '') : q.question_text,
+                answers: q.answers.map(a => ({
+                    answer_text: typeof a.answer_text === 'object' ? (a.answer_text[lang] || a.answer_text['fr'] || '') : a.answer_text,
+                    is_correct: a.is_correct
+                }))
+            }));
+
             setFormData({
                 ...formData,
-                questions: response.data.questions
+                questions: formattedQuestions
             });
             alert(t('admin.success.generateAI', '✅ Questions générées avec succès par l\'IA !'));
         } catch (error) {

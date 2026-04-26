@@ -111,7 +111,20 @@ const AdminQuestions = () => {
         setIsGenerating(true);
         try {
             const response = await api.post('/ai/generate-questions', { count: aiQuestionCount });
-            setAiPreview(response.data.questions);
+            const lang = i18n.language;
+            
+            // Format the questions to use the current language for preview, 
+            // but keep the full objects for saving
+            const formattedQuestions = response.data.questions.map(q => ({
+                ...q,
+                text_display: typeof q.text === 'object' ? (q.text[lang] || q.text['fr'] || '') : q.text,
+                options: q.options.map(opt => ({
+                    ...opt,
+                    text_display: typeof opt.text === 'object' ? (opt.text[lang] || opt.text['fr'] || '') : opt.text
+                }))
+            }));
+            
+            setAiPreview(formattedQuestions);
             setIsAiModalOpen(true);
         } catch (error) {
             console.error('Error generating AI questions', error);
@@ -140,13 +153,27 @@ const AdminQuestions = () => {
 
     const handleAiQuestionChange = (qIndex, value) => {
         const updated = [...aiPreview];
-        updated[qIndex].text = value;
+        const lang = i18n.language;
+        updated[qIndex].text_display = value;
+        if (typeof updated[qIndex].text === 'object') {
+            updated[qIndex].text[lang] = value;
+        } else {
+            updated[qIndex].text = value;
+        }
         setAiPreview(updated);
     };
 
     const handleAiOptionChange = (qIndex, optIndex, field, value) => {
         const updated = [...aiPreview];
-        if (field === 'points') {
+        const lang = i18n.language;
+        if (field === 'text') {
+            updated[qIndex].options[optIndex].text_display = value;
+            if (typeof updated[qIndex].options[optIndex].text === 'object') {
+                updated[qIndex].options[optIndex].text[lang] = value;
+            } else {
+                updated[qIndex].options[optIndex].text = value;
+            }
+        } else if (field === 'points') {
             updated[qIndex].options[optIndex][field] = parseInt(value, 10) || 0;
         } else {
             updated[qIndex].options[optIndex][field] = value;
@@ -235,7 +262,7 @@ const AdminQuestions = () => {
                                         <label>{t('admin.management.questionText', 'Texte de la question')} {idx + 1}</label>
                                         <input 
                                             type="text" 
-                                            value={q.text} 
+                                            value={q.text_display} 
                                             onChange={(e) => handleAiQuestionChange(idx, e.target.value)} 
                                             required 
                                         />
@@ -250,7 +277,7 @@ const AdminQuestions = () => {
                                                 <input 
                                                     type="text" 
                                                     placeholder={t('admin.management.optionText', 'Texte de l\'option')} 
-                                                    value={opt.text}
+                                                    value={opt.text_display}
                                                     onChange={(e) => handleAiOptionChange(idx, oIdx, 'text', e.target.value)}
                                                     required
                                                 />
