@@ -34,20 +34,35 @@ ChartJS.register(
 const Dashboard = () => {
     const { user, logout } = useAuth();
     const [results, setResults] = useState([]);
+    const [formations, setFormations] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchResults = async () => {
+        const fetchData = async () => {
             try {
-                const response = await api.get('/orientation/results');
-                setResults(response.data);
+                const [resResponse, formResponse] = await Promise.all([
+                    api.get('/orientation/results'),
+                    api.get('/formations')
+                ]);
+                
+                setResults(resResponse.data);
+                
+                const formationsWithProgress = await Promise.all(formResponse.data.map(async (f) => {
+                    try {
+                        const pRes = await api.get(`/formations/${f.id}/progress`);
+                        return { ...f, progress: pRes.data.percentage };
+                    } catch (e) {
+                        return { ...f, progress: 0 };
+                    }
+                }));
+                setFormations(formationsWithProgress);
             } catch (error) {
-                console.error('Error fetching results', error);
+                console.error('Error fetching dashboard data', error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchResults();
+        fetchData();
     }, []);
 
     const containerVariants = {
@@ -135,6 +150,38 @@ const Dashboard = () => {
                                 Commencer <ArrowRight size={20} />
                             </Link>
                         </motion.div>
+
+                        <div className="activity-section" style={{ marginBottom: '40px' }}>
+                            <div className="section-header-row">
+                                <h2>Ma Progression E-learning</h2>
+                            </div>
+                            {loading ? (
+                                <div className="loading-state">Chargement...</div>
+                            ) : formations.length > 0 ? (
+                                <div className="formations-progress-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '16px' }}>
+                                    {formations.filter(f => f.progress > 0).map(f => (
+                                        <div key={f.id} className="glass-card" style={{ padding: '20px' }}>
+                                            <h4 style={{ margin: '0 0 12px 0' }}>{f.title}</h4>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#666', marginBottom: '8px' }}>
+                                                <span>Complété</span>
+                                                <span>{f.progress}%</span>
+                                            </div>
+                                            <div style={{ width: '100%', height: '6px', background: '#eee', borderRadius: '3px', overflow: 'hidden' }}>
+                                                <div style={{ width: `${f.progress}%`, height: '100%', background: 'var(--primary)' }}></div>
+                                            </div>
+                                            <Link to={`/formations/${f.id}/courses`} style={{ display: 'block', marginTop: '16px', fontSize: '14px', color: 'var(--primary)', textDecoration: 'none' }}>
+                                                Continuer le cours &rarr;
+                                            </Link>
+                                        </div>
+                                    ))}
+                                    {formations.filter(f => f.progress > 0).length === 0 && (
+                                        <p style={{ color: '#666' }}>Vous n'avez pas encore commencé de formation.</p>
+                                    )}
+                                </div>
+                            ) : (
+                                <p style={{ color: '#666' }}>Aucune formation disponible.</p>
+                            )}
+                        </div>
 
                         <div className="activity-section">
                             <div className="section-header-row">
