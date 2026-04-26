@@ -44,14 +44,13 @@ const Sidebar = () => {
                     <HelpCircle size={20} />
                     <span>{t('admin.questions', 'Questions')}</span>
                 </NavLink>
-                <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-                    <Users size={20} />
-                    <span>{t('admin.users', 'Utilisateurs')}</span>
-                </NavLink>
-                <div className="sidebar-divider"></div>
                 <NavLink to="/admin/quizzes" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
                     <HelpCircle size={20} />
                     <span>{t('admin.quizzes', 'Quizzes')}</span>
+                </NavLink>
+                <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+                    <Users size={20} />
+                    <span>{t('admin.users', 'Utilisateurs')}</span>
                 </NavLink>
                 <div className="sidebar-divider"></div>
                 <NavLink to="/admin/settings" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
