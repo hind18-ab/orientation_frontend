@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import api from '../../api/axios';
 import './Courses.css';
 
 const FormationsList = () => {
+    const { t, i18n } = useTranslation();
     const [formations, setFormations] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,13 +43,13 @@ const FormationsList = () => {
         fetchData();
     }, []);
 
-    if (loading) return <div className="container" style={{ padding: '2rem' }}>Chargement...</div>;
+    if (loading) return <div className="container" style={{ padding: '2rem' }}>{t('common.loading', 'Chargement...')}</div>;
 
     return (
         <div className="container formations-page" style={{ padding: '4rem 1rem' }}>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-header">
-                <h1 className="section-title">Nos Formations</h1>
-                <p>Découvrez nos programmes pour construire votre avenir.</p>
+                <h1 className="section-title">{t('formations.title', 'Nos Formations')}</h1>
+                <p>{t('formations.available', 'Découvrez nos programmes pour construire votre avenir.')}</p>
             </motion.div>
 
             <div className="formations-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
@@ -58,15 +66,17 @@ const FormationsList = () => {
                             <BookOpen size={24} />
                         </div>
                         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: '#6366f1', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                            {f.domain?.name || 'Général'}
+                            {getLocalizedText(f.domain?.name) || t('formations.general', 'Général')}
                         </span>
-                        <h3>{f.title}</h3>
-                        <p style={{ flexGrow: 1, color: '#666', marginBottom: '1rem' }}>{f.description || 'Aucune description.'}</p>
+                        <h3>{getLocalizedText(f.title)}</h3>
+                        <p style={{ flexGrow: 1, color: '#666', marginBottom: '1rem' }}>
+                            {getLocalizedText(f.description) || t('formations.noDescription', 'Aucune description.')}
+                        </p>
                         
                         {/* Progress Bar */}
                         <div style={{ marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#666', marginBottom: '0.4rem' }}>
-                                <span>Progression</span>
+                                <span>{t('formations.progress', 'Progression')}</span>
                                 <span>{f.progress || 0}%</span>
                             </div>
                             <div style={{ width: '100%', height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
@@ -79,8 +89,8 @@ const FormationsList = () => {
                         </div>
 
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: 'auto', flexWrap: 'wrap' }}>
-                            <Link to={`/formations/${f.id}/courses`} className="btn btn-primary btn-sm">Voir les cours</Link>
-                            <Link to={`/formations/${f.id}/quiz`} className="btn btn-outline btn-sm" style={{ padding: '0.5rem 1rem', border: '1px solid #6366f1', borderRadius: '4px', color: '#6366f1', textDecoration: 'none', fontSize: '0.875rem' }}>Passer le Quiz</Link>
+                            <Link to={`/formations/${f.id}/courses`} className="btn btn-primary btn-sm">{t('formations.continue', 'Voir les cours')}</Link>
+                            <Link to={`/formations/${f.id}/quiz`} className="btn btn-outline btn-sm" style={{ padding: '0.5rem 1rem', border: '1px solid #6366f1', borderRadius: '4px', color: '#6366f1', textDecoration: 'none', fontSize: '0.875rem' }}>{t('quiz.title', 'Passer le Quiz')}</Link>
                             
                             {f.progress === 100 && (
                                 <button 
@@ -89,13 +99,13 @@ const FormationsList = () => {
                                             const res = await api.post(`/formations/${f.id}/certificate/generate`);
                                             window.location.href = res.data.download_url;
                                         } catch (err) {
-                                            alert(err.response?.data?.message || 'Erreur lors de la génération du certificat.');
+                                            alert(err.response?.data?.message || t('common.error', 'Erreur lors de la génération du certificat.'));
                                         }
                                     }}
                                     className="btn btn-success btn-sm"
                                     style={{ padding: '0.5rem 1rem', background: '#10b981', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.875rem' }}
                                 >
-                                    Certificat
+                                    {t('certificate.download', 'Certificat')}
                                 </button>
                             )}
                         </div>

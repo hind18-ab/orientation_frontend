@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { HelpCircle, BookOpen, Users, BarChart3 } from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+    const { t, i18n } = useTranslation();
     const [stats, setStats] = useState({ domains: 0, questions: 0, users: 0, results: 0 });
     const [activities, setActivities] = useState({ registrations: [], results: [] });
     const [loading, setLoading] = useState(true);
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,8 +36,8 @@ const AdminDashboard = () => {
 
     return (
         <div className="admin-dashboard">
-            <h1>Tableau de Bord Admin</h1>
-            <p className="subtitle" style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Aperçu global de la plateforme.</p>
+            <h1>{t('admin.dashboard', 'Tableau de Bord Admin')}</h1>
+            <p className="subtitle" style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>{t('admin.dashboardSubtitle', 'Aperçu global de la plateforme')}.</p>
 
             <div className="stats-grid">
                 <div className="stat-card">
@@ -38,7 +46,7 @@ const AdminDashboard = () => {
                     </div>
                     <div>
                         <div className="stat-value">{stats.domains}</div>
-                        <div className="stat-label">Domaines</div>
+                        <div className="stat-label">{t('admin.stats.totalDomains', 'Domaines')}</div>
                     </div>
                 </div>
                 <div className="stat-card">
@@ -47,7 +55,7 @@ const AdminDashboard = () => {
                     </div>
                     <div>
                         <div className="stat-value">{stats.questions}</div>
-                        <div className="stat-label">Questions</div>
+                        <div className="stat-label">{t('admin.stats.totalQuestions', 'Questions')}</div>
                     </div>
                 </div>
                 <div className="stat-card">
@@ -56,7 +64,7 @@ const AdminDashboard = () => {
                     </div>
                     <div>
                         <div className="stat-value">{stats.users}</div>
-                        <div className="stat-label">Utilisateurs</div>
+                        <div className="stat-label">{t('admin.stats.totalUsers', 'Utilisateurs')}</div>
                     </div>
                 </div>
                 <div className="stat-card">
@@ -65,17 +73,17 @@ const AdminDashboard = () => {
                     </div>
                     <div>
                         <div className="stat-value">{stats.results}</div>
-                        <div className="stat-label">Tests Passés</div>
+                        <div className="stat-label">{t('admin.stats.totalTests', 'Tests Passés')}</div>
                     </div>
                 </div>
             </div>
             
             <div className="activities-grid" style={{ marginTop: '32px' }}>
                 <div className="activity-card">
-                    <h3>Dernières Inscriptions</h3>
+                    <h3>{t('admin.history.recentUsers', 'Dernières Inscriptions')}</h3>
                     <div style={{ marginTop: '20px' }}>
                         {loading ? (
-                            <p>Chargement...</p>
+                            <p>{t('common.loading', 'Chargement...')}</p>
                         ) : activities.registrations.length > 0 ? (
                             <div className="activity-list">
                                 {activities.registrations.map((user, index) => (
@@ -91,16 +99,16 @@ const AdminDashboard = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p style={{ color: 'var(--text-muted)' }}>Aucune inscription.</p>
+                            <p style={{ color: 'var(--text-muted)' }}>{t('admin.history.noUsers', 'Aucune inscription')}.</p>
                         )}
                     </div>
                 </div>
 
                 <div className="activity-card">
-                    <h3>Derniers Tests Passés</h3>
+                    <h3>{t('admin.history.recentTests', 'Derniers Tests Passés')}</h3>
                     <div style={{ marginTop: '20px' }}>
                         {loading ? (
-                            <p>Chargement...</p>
+                            <p>{t('common.loading', 'Chargement...')}</p>
                         ) : activities.results.length > 0 ? (
                             <div className="activity-list">
                                 {activities.results.map((result, index) => (
@@ -108,7 +116,7 @@ const AdminDashboard = () => {
                                         <div className="result-header">
                                             <span style={{ fontWeight: '600', color: 'var(--text)' }}>{result.message}</span>
                                             <span className="result-domain-badge">
-                                                {result.domain}
+                                                {getLocalizedText(result.domain)}
                                             </span>
                                         </div>
                                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -118,7 +126,7 @@ const AdminDashboard = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p style={{ color: 'var(--text-muted)' }}>Aucun test complété.</p>
+                            <p style={{ color: 'var(--text-muted)' }}>{t('admin.history.noTests', 'Aucun test complété')}.</p>
                         )}
                     </div>
                 </div>

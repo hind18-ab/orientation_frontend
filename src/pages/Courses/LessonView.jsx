@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, CheckCircle, ChevronLeft, BookOpen, Clock, Target, Layout, Server, Database } from 'lucide-react';
 import api from '../../api/axios';
 
 const LessonView = () => {
+    const { t, i18n } = useTranslation();
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
     const { courseId } = useParams();
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);
@@ -21,7 +29,8 @@ const LessonView = () => {
                 setLessons(lRes.data);
                 
                 if (lRes.data.length > 0) {
-                    setActiveLesson(lRes.data[0]);
+                    const firstLesson = lRes.data[0];
+                    setActiveLesson(firstLesson);
                 }
                 setLoading(false);
             } catch (err) {
@@ -96,12 +105,12 @@ const LessonView = () => {
 
     const FullStackSchema = () => (
         <div className="visual-schema glass-card">
-            <h4 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#1e3a8a' }}>Architecture Full-Stack</h4>
+            <h4 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#1e3a8a' }}>{t('lessons.architecture', 'Architecture Full-Stack')}</h4>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
                 <div className="schema-box frontend">
                     <Layout size={32} />
-                    <span>Frontend (React)</span>
-                    <p>Interface Utilisateur</p>
+                    <span>{t('lessons.frontend', 'Frontend')} (React)</span>
+                    <p>{t('lessons.ui', 'Interface Utilisateur')}</p>
                 </div>
                 <div className="schema-arrow">
                     <div className="arrow-line"></div>
@@ -109,16 +118,16 @@ const LessonView = () => {
                 </div>
                 <div className="schema-box backend">
                     <Server size={32} />
-                    <span>Backend (Laravel)</span>
-                    <p>Logique & API</p>
+                    <span>{t('lessons.backend', 'Backend')} (Laravel)</span>
+                    <p>{t('lessons.logic', 'Logique & API')}</p>
                 </div>
                 <div className="schema-arrow">
                     <div className="arrow-line"></div>
                 </div>
                 <div className="schema-box database">
                     <Database size={32} />
-                    <span>Base de Données</span>
-                    <p>MySQL / Storage</p>
+                    <span>{t('lessons.database', 'Base de Données')}</span>
+                    <p>{t('lessons.storage', 'MySQL / Storage')}</p>
                 </div>
             </div>
         </div>
@@ -131,7 +140,7 @@ const LessonView = () => {
         return url;
     };
 
-    if (loading) return <div className="loading-screen">Chargement de votre leçon...</div>;
+    if (loading) return <div className="loading-screen">{t('lessons.loading', 'Chargement de votre leçon...')}</div>;
 
     return (
         <div className="lesson-view-container">
@@ -391,9 +400,9 @@ const LessonView = () => {
                 <div className="sidebar-header">
                     <Link to={`/formations/${course?.formation_id}/courses`} className="back-link">
                         <ChevronLeft size={16} />
-                        Retour au cours
+                        {t('lessons.backToCourse', 'Retour au cours')}
                     </Link>
-                    <h3 style={{ fontSize: '1.25rem', color: '#1e293b' }}>{course?.title}</h3>
+                    <h3 style={{ fontSize: '1.25rem', color: '#1e293b' }}>{getLocalizedText(course?.title)}</h3>
                 </div>
                 
                 <div className="lesson-list">
@@ -405,7 +414,7 @@ const LessonView = () => {
                         >
                             <div className="lesson-number">{index + 1}</div>
                             <span style={{ fontSize: '0.925rem', fontWeight: activeLesson?.id === l.id ? '600' : '500' }}>
-                                {l.title}
+                                {getLocalizedText(l.title)}
                             </span>
                         </div>
                     ))}
@@ -425,12 +434,12 @@ const LessonView = () => {
                             >
                                 <div className="lesson-title-section">
                                     <h1 style={{ fontSize: '2.5rem', color: '#0f172a', letterSpacing: '-0.025em' }}>
-                                        {activeLesson.title}
+                                        {getLocalizedText(activeLesson.title)}
                                     </h1>
                                     <div className="lesson-meta">
-                                        <div className="meta-item"><BookOpen size={16} /> Module 1</div>
-                                        <div className="meta-item"><Clock size={16} /> 15 min</div>
-                                        <div className="meta-item"><Target size={16} /> Objectifs</div>
+                                        <div className="meta-item"><BookOpen size={16} /> {t('lessons.module', 'Module')} 1</div>
+                                        <div className="meta-item"><Clock size={16} /> 15 {t('lessons.min', 'min')}</div>
+                                        <div className="meta-item"><Target size={16} /> {t('lessons.objectives', 'Objectifs')}</div>
                                     </div>
                                 </div>
 
@@ -452,7 +461,7 @@ const LessonView = () => {
                                 {activeLesson.id === 1 && <FullStackSchema />}
 
                                 <div className="lesson-body-content">
-                                    {renderContent(activeLesson.content)}
+                                    {renderContent(getLocalizedText(activeLesson.content))}
                                 </div>
 
                                 <div className="complete-btn-container">
@@ -460,7 +469,7 @@ const LessonView = () => {
                                         onClick={async () => {
                                             try {
                                                 await api.post(`/lessons/${activeLesson.id}/complete`);
-                                                alert('Félicitations ! Leçon terminée.');
+                                                alert(t('lessons.completedSuccess', 'Félicitations ! Leçon terminée.'));
                                             } catch (err) {
                                                 console.error(err);
                                             }
@@ -477,7 +486,7 @@ const LessonView = () => {
                                         }}
                                     >
                                         <CheckCircle size={22} />
-                                        Marquer comme terminée
+                                        {t('lessons.markCompleted', 'Marquer comme terminée')}
                                     </button>
                                 </div>
                             </motion.div>

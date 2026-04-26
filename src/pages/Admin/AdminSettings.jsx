@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { Save, Key, Settings as SettingsIcon, AlertCircle, CheckCircle } from 'lucide-react';
 import './AdminSettings.css';
 
 const AdminSettings = () => {
+    const { t } = useTranslation();
     const [settings, setSettings] = useState({
         gemini_api_key: ''
     });
@@ -46,7 +48,7 @@ const AdminSettings = () => {
 
         try {
             await api.post('/admin/settings', { settings });
-            setMessage({ type: 'success', text: 'Paramètres sauvegardés avec succès !' });
+            setMessage({ type: 'success', text: t('common.settingsSaved', 'Paramètres sauvegardés avec succès !') });
             
             // Masquer le message après 3 secondes
             setTimeout(() => {
@@ -54,14 +56,14 @@ const AdminSettings = () => {
             }, 3000);
         } catch (error) {
             console.error('Error saving settings:', error);
-            setMessage({ type: 'error', text: 'Une erreur est survenue lors de la sauvegarde.' });
+            setMessage({ type: 'error', text: t('common.errorSavingSettings', 'Une erreur est survenue lors de la sauvegarde.') });
         } finally {
             setIsSaving(false);
         }
     };
 
     if (isLoading) {
-        return <div className="loading">Chargement des paramètres...</div>;
+        return <div className="loading">{t('common.loadingSettings', 'Chargement des paramètres...')}</div>;
     }
 
     return (
@@ -69,9 +71,9 @@ const AdminSettings = () => {
             <header className="page-header">
                 <div className="header-title">
                     <SettingsIcon size={32} className="text-primary" />
-                    <h1>Paramètres Généraux</h1>
+                    <h1>{t('admin.management.generalSettings', 'Paramètres Généraux')}</h1>
                 </div>
-                <p>Gérez les configurations globales de la plateforme.</p>
+                <p>{t('admin.management.generalSettingsSubtitle', 'Gérez les configurations globales de la plateforme')}.</p>
             </header>
 
             {message && (
@@ -85,15 +87,14 @@ const AdminSettings = () => {
                 <div className="settings-section">
                     <div className="section-header">
                         <Key size={24} className="icon" />
-                        <h2>Intelligence Artificielle (Gemini API)</h2>
+                        <h2>{t('admin.management.aiSettings', 'Intelligence Artificielle (Gemini API)')}</h2>
                     </div>
                     <p className="section-description">
-                        La clé API est utilisée pour générer automatiquement des questions pour le test d'orientation. 
-                        Si ce champ est vide, le système tentera d'utiliser la clé définie dans le fichier de configuration du serveur (.env).
+                        {t('admin.management.aiSettingsNote', 'La clé API est utilisée pour générer automatiquement des questions pour le test d\'orientation. Si ce champ est vide, le système tentera d\'utiliser la clé définie dans le fichier de configuration du serveur (.env).')}
                     </p>
 
                     <div className="form-group">
-                        <label htmlFor="gemini_api_key">Clé API Google Gemini</label>
+                        <label htmlFor="gemini_api_key">{t('admin.management.googleGeminiKey', 'Clé API Google Gemini')}</label>
                         <input
                             type="password"
                             id="gemini_api_key"
@@ -109,11 +110,11 @@ const AdminSettings = () => {
                 <div className="form-actions">
                     <button type="submit" className="btn btn-primary btn-save-settings" disabled={isSaving}>
                         {isSaving ? (
-                            <>Sauvegarde...</>
+                            <>{t('common.saving', 'Sauvegarde...')}</>
                         ) : (
                             <>
                                 <Save size={18} />
-                                Sauvegarder les paramètres
+                                {t('common.saveSettings', 'Sauvegarder les paramètres')}
                             </>
                         )}
                     </button>

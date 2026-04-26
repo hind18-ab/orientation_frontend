@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import './AdminQuizzes.css';
 
 const AdminQuizzes = () => {
+    const { t, i18n } = useTranslation();
     const [quizzes, setQuizzes] = useState([]);
     const [formations, setFormations] = useState([]);
     const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const AdminQuizzes = () => {
         title: '',
         description: '',
         passing_score: 50,
+        language: i18n.language,
         questions: []
     });
     const [loading, setLoading] = useState(true);
@@ -17,6 +20,12 @@ const AdminQuizzes = () => {
     const [aiQuestionCount, setAiQuestionCount] = useState(5);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingQuizId, setEditingQuizId] = useState(null);
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         fetchData();
@@ -46,7 +55,7 @@ const AdminQuizzes = () => {
 
     const handleGenerateAI = async () => {
         if (!formData.formation_id) {
-            alert('Veuillez d\'abord sélectionner une formation.');
+            alert(t('common.selectFormationFirst', 'Veuillez d\'abord sélectionner une formation.'));
             return;
         }
         
@@ -63,11 +72,11 @@ const AdminQuizzes = () => {
                 ...formData,
                 questions: response.data.questions
             });
-            alert('✅ Questions générées avec succès par l\'IA !');
+            alert(t('admin.success.generateAI', '✅ Questions générées avec succès par l\'IA !'));
         } catch (error) {
             console.error('Error generating AI quiz:', error);
             const errMsg = error.response?.data?.error || error.message || 'Erreur inconnue';
-            alert('❌ Erreur lors de la génération par l\'IA :\n' + errMsg);
+            alert(t('admin.error.generateAI', '❌ Erreur lors de la génération par l\'IA :\n') + errMsg);
         } finally {
             setAiLoading(false);
         }
@@ -96,16 +105,16 @@ const AdminQuizzes = () => {
         try {
             if (editingQuizId) {
                 await api.put(`/admin/quizzes/${editingQuizId}`, formData);
-                alert('Quiz mis à jour avec succès!');
+                alert(t('admin.success.quizUpdated', 'Quiz mis à jour avec succès!'));
             } else {
                 await api.post('/admin/quizzes', formData);
-                alert('Quiz créé avec succès!');
+                alert(t('admin.success.quizCreated', 'Quiz créé avec succès!'));
             }
             resetForm();
             fetchData();
         } catch (error) {
             console.error('Error saving quiz:', error);
-            alert('Erreur lors de la sauvegarde du quiz.');
+            alert(t('admin.error.savingQuiz', 'Erreur lors de la sauvegarde du quiz.'));
         }
     };
 
@@ -115,6 +124,7 @@ const AdminQuizzes = () => {
             title: '',
             description: '',
             passing_score: 50,
+            language: i18n.language,
             questions: []
         });
         setEditingQuizId(null);
@@ -127,21 +137,29 @@ const AdminQuizzes = () => {
             const quiz = response.data;
             setFormData({
                 formation_id: quiz.formation_id,
-                title: quiz.title,
-                description: quiz.description || '',
+                title: getLocalizedText(quiz.title),
+                description: getLocalizedText(quiz.description),
                 passing_score: quiz.passing_score,
-                questions: quiz.questions || []
+                language: i18n.language,
+                questions: (quiz.questions || []).map(q => ({
+                    ...q,
+                    question_text: getLocalizedText(q.question_text),
+                    answers: (q.answers || []).map(a => ({
+                        ...a,
+                        answer_text: getLocalizedText(a.answer_text)
+                    }))
+                }))
             });
             setEditingQuizId(id);
             setIsFormVisible(true);
         } catch (error) {
             console.error('Error fetching quiz details:', error);
-            alert('Erreur lors de la récupération du quiz.');
+            alert(t('admin.error.fetchingQuiz', 'Erreur lors de la récupération du quiz.'));
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Voulez-vous vraiment supprimer ce quiz ?')) return;
+        if (!window.confirm(t('common.confirmDelete', 'Voulez-vous vraiment supprimer cet élément ?'))) return;
         try {
             await api.delete(`/admin/quizzes/${id}`);
             fetchData();
@@ -150,15 +168,15 @@ const AdminQuizzes = () => {
         }
     };
 
-    if (loading) return <div>Chargement...</div>;
+    if (loading) return <div>{t('common.loading', 'Chargement...')}</div>;
 
     return (
         <div className="admin-container">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ margin: 0 }}>Gestion des Quizzes</h2>
+                <h2 style={{ margin: 0 }}>{t('admin.quizzes', 'Gestion des Quizzes')}</h2>
                 {!isFormVisible && (
                     <button onClick={() => setIsFormVisible(true)} className="btn-add" style={{ margin: 0 }}>
-                        + Créer un Quiz
+                        + {t('admin.management.createQuiz', 'Créer un Quiz')}
                     </button>
                 )}
             </div>
@@ -169,25 +187,27 @@ const AdminQuizzes = () => {
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Formation</th>
-                                <th>Titre</th>
-                                <th>Score Requis</th>
-                                <th>Actions</th>
+                                <th>{t('admin.formations', 'Formation')}</th>
+                                <th>{t('admin.history.title', 'Titre')}</th>
+                                <th>{t('admin.management.passingScore', 'Score Requis')}</th>
+                                <th>{t('common.actions', 'Actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {quizzes.map(quiz => (
                                 <tr key={quiz.id}>
                                     <td>{quiz.id}</td>
-                                    <td>{quiz.formation?.title}</td>
-                                    <td>{quiz.title}</td>
+                                    <td>{getLocalizedText(quiz.formation?.title) || quiz.formation_id}</td>
+                                    <td>
+                                        {getLocalizedText(quiz.title)}
+                                    </td>
                                     <td>{quiz.passing_score}%</td>
                                     <td style={{ whiteSpace: 'nowrap' }}>
                                         <button onClick={() => handleEdit(quiz.id)} className="btn-add" style={{ background: '#3b82f6', marginRight: '0.5rem', marginBottom: '0', padding: '0.5rem 1rem' }}>
-                                            Modifier
+                                            {t('common.edit', 'Modifier')}
                                         </button>
                                         <button onClick={() => handleDelete(quiz.id)} className="btn-delete" style={{ marginBottom: '0', padding: '0.5rem 1rem' }}>
-                                            Supprimer
+                                            {t('common.delete', 'Supprimer')}
                                         </button>
                                     </td>
                                 </tr>
@@ -197,24 +217,24 @@ const AdminQuizzes = () => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="quiz-form">
-                    <h3>{editingQuizId ? 'Modifier le Quiz' : 'Créer un nouveau Quiz'}</h3>
+                    <h3>{editingQuizId ? t('admin.management.editQuiz', 'Modifier le Quiz') : t('admin.management.createQuiz', 'Créer un nouveau Quiz')}</h3>
                     
                     <div className="form-group">
-                        <label>Formation:</label>
+                        <label>{t('admin.formations', 'Formation')}:</label>
                         <select
                             value={formData.formation_id}
                             onChange={(e) => setFormData({ ...formData, formation_id: e.target.value })}
                             required
                         >
-                            <option value="">Sélectionner une formation</option>
+                            <option value="">{t('common.select', 'Sélectionner')} {t('admin.formations', 'une formation')}</option>
                             {formations.map(f => (
-                                <option key={f.id} value={f.id}>{f.title}</option>
+                                <option key={f.id} value={f.id}>{getLocalizedText(f.title)}</option>
                             ))}
                         </select>
                     </div>
 
                     <div className="form-group">
-                        <label>Titre du Quiz:</label>
+                        <label>{t('admin.history.title', 'Titre')}:</label>
                         <input
                             type="text"
                             value={formData.title}
@@ -224,7 +244,7 @@ const AdminQuizzes = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Description:</label>
+                        <label>{t('common.description', 'Description')}:</label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -233,7 +253,7 @@ const AdminQuizzes = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Score pour réussir (%):</label>
+                        <label>{t('admin.management.passingScore', 'Score pour réussir (%)')}:</label>
                         <input
                             type="number"
                             min="0"
@@ -244,12 +264,14 @@ const AdminQuizzes = () => {
                         />
                     </div>
 
+
+
                     <div style={{ marginBottom: '2rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                            <h4>Questions</h4>
+                            <h4>{t('admin.questions', 'Questions')}</h4>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <label style={{ margin: 0, fontWeight: 'bold', fontSize: '0.9rem' }}>Nombre :</label>
+                                    <label style={{ margin: 0, fontWeight: 'bold', fontSize: '0.9rem' }}>{t('common.count', 'Nombre')} :</label>
                                     <input 
                                         type="number" 
                                         min="1" 
@@ -273,7 +295,7 @@ const AdminQuizzes = () => {
                                         opacity: aiLoading ? 0.7 : 1
                                     }}
                                 >
-                                    {aiLoading ? '⏳ Génération en cours...' : '✨ Générer par IA'}
+                                    {aiLoading ? `⏳ ${t('admin.generating', 'Génération en cours...')}` : `✨ ${t('admin.generateAI', 'Générer par IA')}`}
                                 </button>
                             </div>
                         </div>
@@ -281,7 +303,7 @@ const AdminQuizzes = () => {
                             <div key={qIndex} className="question-block">
                                 <input
                                     type="text"
-                                    placeholder={`Question ${qIndex + 1}`}
+                                    placeholder={`${t('admin.questions', 'Question')} ${qIndex + 1}`}
                                     value={q.question_text}
                                     onChange={(e) => handleQuestionChange(qIndex, e.target.value)}
                                     required
@@ -290,12 +312,12 @@ const AdminQuizzes = () => {
                                 />
 
                                 <div style={{ paddingLeft: '1.5rem' }}>
-                                    <h5 style={{ marginBottom: '1rem', color: '#6b7280' }}>Réponses:</h5>
+                                    <h5 style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>{t('common.answers', 'Réponses')}:</h5>
                                     {q.answers.map((a, aIndex) => (
                                         <div key={aIndex} className="answer-row">
                                             <input
                                                 type="text"
-                                                placeholder={`Réponse ${aIndex + 1}`}
+                                                placeholder={`${t('common.answer', 'Réponse')} ${aIndex + 1}`}
                                                 value={a.answer_text}
                                                 onChange={(e) => handleAnswerChange(qIndex, aIndex, 'answer_text', e.target.value)}
                                                 required
@@ -307,27 +329,27 @@ const AdminQuizzes = () => {
                                                     onChange={(e) => handleAnswerChange(qIndex, aIndex, 'is_correct', e.target.checked)}
                                                     style={{ width: 'auto', marginRight: '8px' }}
                                                 />
-                                                Bonne réponse
+                                                {t('admin.management.isCorrect', 'Bonne réponse')}
                                             </label>
                                         </div>
                                     ))}
                                     <button type="button" onClick={() => handleAddAnswer(qIndex)} className="btn-add" style={{ background: '#94a3b8', marginTop: '0.5rem' }}>
-                                        + Ajouter une réponse
+                                        + {t('admin.management.addAnswer', 'Ajouter une réponse')}
                                     </button>
                                 </div>
                             </div>
                         ))}
                         <button type="button" onClick={handleAddQuestion} className="btn-add">
-                            + Ajouter une question
+                            + {t('admin.management.addQuestion', 'Ajouter une question')}
                         </button>
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <button type="submit" className="btn-submit" style={{ flex: 1 }}>
-                            {editingQuizId ? 'Mettre à jour le Quiz' : 'Enregistrer le Quiz'}
+                            {editingQuizId ? t('common.update', 'Mettre à jour') : t('common.save', 'Enregistrer')}
                         </button>
                         <button type="button" onClick={resetForm} className="btn-delete" style={{ flex: 1, margin: 0, padding: '0.75rem', fontSize: '1rem', fontWeight: '600' }}>
-                            Annuler
+                            {t('common.cancel', 'Annuler')}
                         </button>
                     </div>
                 </form>

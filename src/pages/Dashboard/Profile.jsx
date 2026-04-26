@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
-import { User, Mail, Lock, Save, Key, AlertCircle, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { User, Mail, Lock, Save, Key, AlertCircle, CheckCircle, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Profile.css';
 
 const Profile = () => {
     const { user, updateUser } = useAuth();
+    const { t, i18n } = useTranslation();
     
     // Profile info state
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
+    const [preferredLanguage, setPreferredLanguage] = useState(user?.preferred_language || 'fr');
     const [profileLoading, setProfileLoading] = useState(false);
     const [profileMessage, setProfileMessage] = useState({ type: '', text: '' });
 
@@ -27,13 +30,18 @@ const Profile = () => {
         setProfileMessage({ type: '', text: '' });
 
         try {
-            const response = await api.put('/user/profile', { name, email });
+            const response = await api.put('/user/profile', { name, email, preferred_language: preferredLanguage });
             updateUser(response.data.user);
-            setProfileMessage({ type: 'success', text: response.data.message });
+            
+            if (i18n.language !== preferredLanguage) {
+                i18n.changeLanguage(preferredLanguage);
+            }
+            
+            setProfileMessage({ type: 'success', text: t('profile.saved', 'Profil mis à jour avec succès') });
         } catch (error) {
             setProfileMessage({ 
                 type: 'error', 
-                text: error.response?.data?.message || 'Une erreur est survenue lors de la mise à jour.' 
+                text: error.response?.data?.message || t('common.error', 'Une erreur est survenue') 
             });
         } finally {
             setProfileLoading(false);
@@ -43,7 +51,7 @@ const Profile = () => {
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            setPasswordMessage({ type: 'error', text: 'Les mots de passe ne correspondent pas.' });
+            setPasswordMessage({ type: 'error', text: t('auth.passwordsDontMatch', 'Les mots de passe ne correspondent pas.') });
             return;
         }
 
@@ -56,14 +64,14 @@ const Profile = () => {
                 password: newPassword,
                 password_confirmation: confirmPassword
             });
-            setPasswordMessage({ type: 'success', text: response.data.message });
+            setPasswordMessage({ type: 'success', text: t('profile.saved', 'Mot de passe mis à jour avec succès') });
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
         } catch (error) {
             setPasswordMessage({ 
                 type: 'error', 
-                text: error.response?.data?.message || 'Le mot de passe actuel est incorrect ou les données sont invalides.' 
+                text: error.response?.data?.message || t('common.error', 'Erreur lors de la mise à jour') 
             });
         } finally {
             setPasswordLoading(false);
@@ -96,10 +104,10 @@ const Profile = () => {
                         variants={itemVariants}
                         className="profile-title"
                     >
-                        Gestion du Profil
+                        {t('profile.title', 'Gestion du Profil')}
                     </motion.h1>
                     <motion.p variants={itemVariants} className="profile-subtitle">
-                        Gérez vos informations personnelles et votre sécurité.
+                        {t('profile.subtitle', 'Gérez vos informations personnelles et votre sécurité.')}
                     </motion.p>
                 </header>
 
@@ -114,12 +122,12 @@ const Profile = () => {
                             <div className="icon-box">
                                 <User size={24} />
                             </div>
-                            <h2>Informations Personnelles</h2>
+                            <h2>{t('profile.personalInfo', 'Informations Personnelles')}</h2>
                         </div>
 
                         <form onSubmit={handleUpdateProfile}>
                             <div className="input-container">
-                                <label>Nom Complet</label>
+                                <label>{t('auth.name', 'Nom Complet')}</label>
                                 <div className="input-wrapper">
                                     <div className="input-icon">
                                         <User size={18} />
@@ -135,7 +143,7 @@ const Profile = () => {
                             </div>
 
                             <div className="input-container">
-                                <label>Email</label>
+                                <label>{t('auth.email', 'Email')}</label>
                                 <div className="input-wrapper">
                                     <div className="input-icon">
                                         <Mail size={18} />
@@ -169,10 +177,10 @@ const Profile = () => {
                                 disabled={profileLoading}
                                 className="btn-profile-save"
                             >
-                                {profileLoading ? 'Chargement...' : (
+                                {profileLoading ? t('common.loading', 'Chargement...') : (
                                     <>
                                         <Save size={18} />
-                                        Enregistrer les modifications
+                                        {t('common.save', 'Enregistrer les modifications')}
                                     </>
                                 )}
                             </button>
@@ -188,12 +196,12 @@ const Profile = () => {
                             <div className="icon-box" style={{ color: '#8b5cf6', background: 'rgba(139, 92, 246, 0.1)' }}>
                                 <Lock size={24} />
                             </div>
-                            <h2>Sécurité</h2>
+                            <h2>{t('profile.security', 'Sécurité')}</h2>
                         </div>
 
                         <form onSubmit={handleUpdatePassword}>
                             <div className="input-container">
-                                <label>Mot de passe actuel</label>
+                                <label>{t('profile.currentPassword', 'Mot de passe actuel')}</label>
                                 <div className="input-wrapper">
                                     <div className="input-icon">
                                         <Key size={18} />
@@ -210,7 +218,7 @@ const Profile = () => {
                             </div>
 
                             <div className="input-container">
-                                <label>Nouveau mot de passe</label>
+                                <label>{t('profile.newPassword', 'Nouveau mot de passe')}</label>
                                 <div className="input-wrapper">
                                     <div className="input-icon">
                                         <Lock size={18} />
@@ -220,14 +228,14 @@ const Profile = () => {
                                         type="password" 
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
-                                        placeholder="Minimum 8 caractères"
+                                        placeholder={t('profile.passwordHint', 'Minimum 8 caractères')}
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="input-container">
-                                <label>Confirmer le nouveau mot de passe</label>
+                                <label>{t('profile.confirmNewPassword', 'Confirmer le nouveau mot de passe')}</label>
                                 <div className="input-wrapper">
                                     <div className="input-icon">
                                         <Lock size={18} />
@@ -262,10 +270,10 @@ const Profile = () => {
                                 disabled={passwordLoading}
                                 className="btn-security-save"
                             >
-                                {passwordLoading ? 'Mise à jour...' : (
+                                {passwordLoading ? t('common.loading', 'Mise à jour...') : (
                                     <>
                                         <Key size={18} />
-                                        Changer le mot de passe
+                                        {t('profile.changePassword', 'Changer le mot de passe')}
                                     </>
                                 )}
                             </button>

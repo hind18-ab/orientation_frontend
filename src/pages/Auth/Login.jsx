@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import './Auth.css';
 
@@ -9,6 +10,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -36,8 +38,8 @@ const Login = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Connexion</h2>
-                <p>Bienvenue sur Orientation. Connectez-vous pour continuer.</p>
+                <h2>{t('auth.login', 'Connexion')}</h2>
+                <p>{t('auth.loginSubtitle', 'Bienvenue sur Orientation. Connectez-vous pour continuer.')}</p>
                 
                 {error && (
                     <div className="error-alert">
@@ -48,21 +50,21 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit} autoComplete="off">
                     <div className="input-group">
-                        <label>E-mail</label>
+                        <label>{t('auth.email', 'E-mail')}</label>
                         <div className="input-with-icon">
                             <Mail size={20} className="icon" />
                             <input 
                                 type="email" 
                                 value={email} 
                                 onChange={(e) => setEmail(e.target.value)} 
-                                placeholder="votre@email.com"
+                                placeholder={t('auth.emailPlaceholder', 'votre@email.com')}
                                 autoComplete="off"
                                 required 
                             />
                         </div>
                     </div>
                     <div className="input-group">
-                        <label>Mot de passe</label>
+                        <label>{t('auth.password', 'Mot de passe')}</label>
                         <div className="input-with-icon">
                             <Lock size={20} className="icon" />
                             <input 
@@ -75,11 +77,11 @@ const Login = () => {
                             />
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-block">Se connecter</button>
+                    <button type="submit" className="btn btn-primary btn-block">{t('auth.login', 'Se connecter')}</button>
                 </form>
                 
                 <p className="auth-footer">
-                    Pas encore de compte ? <Link to="/register">S'inscrire</Link>
+                    {t('auth.noAccount', 'Pas encore de compte ?')} <Link to="/register">{t('auth.register', "S'inscrire")}</Link>
                 </p>
             </div>
         </div>

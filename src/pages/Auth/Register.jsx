@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { User, Mail, Lock, AlertCircle } from 'lucide-react';
 import './Auth.css';
 
@@ -13,6 +14,7 @@ const Register = () => {
     });
     const [error, setError] = useState('');
     const { register } = useAuth();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -45,8 +47,8 @@ const Register = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Inscription</h2>
-                <p>Créez votre compte pour passer votre test d'orientation.</p>
+                <h2>{t('auth.register', 'Inscription')}</h2>
+                <p>{t('auth.registerSubtitle', 'Créez votre compte pour passer votre test d\'orientation.')}</p>
                 
                 {error && (
                     <div className="error-alert">
@@ -57,7 +59,7 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit} autoComplete="off">
                     <div className="input-group">
-                        <label>Nom complet</label>
+                        <label>{t('auth.name', 'Nom complet')}</label>
                         <div className="input-with-icon">
                             <User size={20} className="icon" />
                             <input 
@@ -70,21 +72,21 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="input-group">
-                        <label>E-mail</label>
+                        <label>{t('auth.email', 'E-mail')}</label>
                         <div className="input-with-icon">
                             <Mail size={20} className="icon" />
                             <input 
                                 type="email" 
                                 value={formData.email} 
                                 onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                                placeholder="votre@email.com"
+                                placeholder={t('auth.emailPlaceholder', 'votre@email.com')}
                                 autoComplete="off"
                                 required 
                             />
                         </div>
                     </div>
                     <div className="input-group">
-                        <label>Mot de passe</label>
+                        <label>{t('auth.password', 'Mot de passe')}</label>
                         <div className="input-with-icon">
                             <Lock size={20} className="icon" />
                             <input 
@@ -98,7 +100,7 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="input-group">
-                        <label>Confirmer le mot de passe</label>
+                        <label>{t('auth.confirmPassword', 'Confirmer le mot de passe')}</label>
                         <div className="input-with-icon">
                             <Lock size={20} className="icon" />
                             <input 
@@ -110,11 +112,11 @@ const Register = () => {
                             />
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-block">S'inscrire</button>
+                    <button type="submit" className="btn btn-primary btn-block">{t('auth.register', "S'inscrire")}</button>
                 </form>
                 
                 <p className="auth-footer">
-                    Déjà un compte ? <Link to="/login">Se connecter</Link>
+                    {t('auth.hasAccount', 'Déjà un compte ?')} <Link to="/login">{t('auth.login', 'Se connecter')}</Link>
                 </p>
             </div>
         </div>

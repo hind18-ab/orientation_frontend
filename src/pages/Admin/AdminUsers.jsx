@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { Users, Trash2, Mail, Calendar, Search, Eye, GraduationCap, Award, FileText, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AdminUsers.css';
 
 const AdminUsers = () => {
+    const { t } = useTranslation();
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -44,13 +46,13 @@ const AdminUsers = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+        if (window.confirm(t('common.confirmDelete', 'Voulez-vous vraiment supprimer cet élément ?'))) {
             try {
                 await api.delete(`/admin/users/${id}`);
                 setUsers(users.filter(u => u.id !== id));
             } catch (error) {
                 console.error('Error deleting user', error);
-                alert('Erreur lors de la suppression');
+                alert(t('common.errorDeleting', 'Erreur lors de la suppression'));
             }
         }
     };
@@ -64,13 +66,13 @@ const AdminUsers = () => {
         <div className="admin-container">
             <header className="admin-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <h2>Gestion des Utilisateurs</h2>
+                    <h2>{t('admin.management.users', 'Gestion des Utilisateurs')}</h2>
                 </div>
                 <div className="search-bar">
                     <Search size={20} />
                     <input 
                         type="text" 
-                        placeholder="Rechercher par nom ou email..." 
+                        placeholder={t('common.searchPlaceholder', 'Rechercher par nom ou email...')} 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -78,18 +80,18 @@ const AdminUsers = () => {
             </header>
 
             {loading ? (
-                <div className="loading">Chargement...</div>
+                <div className="loading">{t('common.loading', 'Chargement...')}</div>
             ) : (
                 <div className="admin-table-container">
                     <table className="admin-table">
                         <thead>
                             <tr>
-                                <th>Utilisateur</th>
-                                <th>Email / Inscription</th>
-                                <th className="text-center">Formations</th>
-                                <th className="text-center">Quiz</th>
-                                <th className="text-center">Certificats</th>
-                                <th style={{ textAlign: 'right' }}>Actions</th>
+                                <th>{t('auth.name', 'Utilisateur')}</th>
+                                <th>{t('auth.email', 'Email')} / {t('common.registration', 'Inscription')}</th>
+                                <th className="text-center">{t('admin.formations', 'Formations')}</th>
+                                <th className="text-center">{t('admin.quizzes', 'Quiz')}</th>
+                                <th className="text-center">{t('common.certificates', 'Certificats')}</th>
+                                <th style={{ textAlign: 'right' }}>{t('common.actions', 'Actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,14 +127,14 @@ const AdminUsers = () => {
                                             <button 
                                                 className="btn-view" 
                                                 onClick={() => handleViewDetails(user)}
-                                                title="Voir l'historique complet"
+                                                title={t('common.viewHistory', "Voir l'historique complet")}
                                             >
                                                 <Eye size={18} />
                                             </button>
                                             <button 
                                                 className="btn-delete" 
                                                 onClick={() => handleDelete(user.id)}
-                                                title="Supprimer cet utilisateur"
+                                                title={t('common.deleteUser', "Supprimer cet utilisateur")}
                                             >
                                                 <Trash2 size={18} />
                                             </button>
@@ -170,32 +172,32 @@ const AdminUsers = () => {
                             
                             <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                                 {loadingDetails ? (
-                                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>Chargement de l'historique...</div>
+                                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>{t('common.loadingHistory', "Chargement de l'historique...")}</div>
                                 ) : (
                                     <div className="details-grid">
                                         {/* Orientation Section */}
                                         <section className="detail-section">
                                             <div className="section-header">
                                                 <FileText size={18} />
-                                                <h4 style={{ margin: 0, fontSize: '16px' }}>Tests d'Orientation</h4>
+                                                <h4 style={{ margin: 0, fontSize: '16px' }}>{t('admin.management.orientationTests', "Tests d'Orientation")}</h4>
                                             </div>
                                             {userDetails?.orientation?.length > 0 ? (
                                                 <div className="detail-list">
                                                     {userDetails.orientation.map((res, i) => (
                                                         <div key={i} className="detail-card">
-                                                            <div className="card-title">Domaine : {res.primary_domain?.name || 'Inconnu'}</div>
-                                                            <div className="card-sub">Le {new Date(res.created_at).toLocaleString()}</div>
+                                                            <div className="card-title">{t('admin.domains', 'Domaine')} : {res.primary_domain?.name || 'Inconnu'}</div>
+                                                            <div className="card-sub">{t('common.onDate', 'Le')} {new Date(res.created_at).toLocaleString()}</div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                            ) : <p className="empty-text">Aucun test passé.</p>}
+                                            ) : <p className="empty-text">{t('common.noTestsPassed', 'Aucun test passé.')}</p>}
                                         </section>
 
                                         {/* Formations Section */}
                                         <section className="detail-section">
                                             <div className="section-header">
                                                 <GraduationCap size={18} />
-                                                <h4 style={{ margin: 0, fontSize: '16px' }}>Formations</h4>
+                                                <h4 style={{ margin: 0, fontSize: '16px' }}>{t('admin.formations', 'Formations')}</h4>
                                             </div>
                                             {userDetails?.formations?.length > 0 ? (
                                                 <div className="detail-list">
@@ -208,14 +210,14 @@ const AdminUsers = () => {
                                                         </div>
                                                     ))}
                                                 </div>
-                                            ) : <p className="empty-text">Aucune formation entamée.</p>}
+                                            ) : <p className="empty-text">{t('common.noFormationsStarted', 'Aucune formation entamée.')}</p>}
                                         </section>
 
                                         {/* Quizzes Section */}
                                         <section className="detail-section">
                                             <div className="section-header">
                                                 <Award size={18} />
-                                                <h4 style={{ margin: 0, fontSize: '16px' }}>Quiz & Notes</h4>
+                                                <h4 style={{ margin: 0, fontSize: '16px' }}>{t('admin.quizzes', 'Quiz')} & {t('common.scores', 'Notes')}</h4>
                                             </div>
                                             {userDetails?.quizzes?.length > 0 ? (
                                                 <div className="detail-list">
@@ -233,31 +235,31 @@ const AdminUsers = () => {
                                                         </div>
                                                     ))}
                                                 </div>
-                                            ) : <p className="empty-text">Aucun quiz passé.</p>}
+                                            ) : <p className="empty-text">{t('common.noQuizzesPassed', 'Aucun quiz passé.')}</p>}
                                         </section>
 
                                         {/* Certificates Section */}
                                         <section className="detail-section">
                                             <div className="section-header">
                                                 <Award size={18} style={{ color: 'var(--accent)' }} />
-                                                <h4 style={{ margin: 0, fontSize: '16px' }}>Certificats</h4>
+                                                <h4 style={{ margin: 0, fontSize: '16px' }}>{t('common.certificates', 'Certificats')}</h4>
                                             </div>
                                             {userDetails?.certificates?.length > 0 ? (
                                                 <div className="detail-list">
                                                     {userDetails.certificates.map((c, i) => (
                                                         <div key={i} className="detail-card cert-card">
                                                             <div className="card-title">{c.course_name}</div>
-                                                            <div className="card-sub">Délivré le {c.date}</div>
+                                                            <div className="card-sub">{t('common.deliveredOn', 'Délivré le')} {c.date}</div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                            ) : <p className="empty-text">Aucun certificat.</p>}
+                                            ) : <p className="empty-text">{t('common.noCertificates', 'Aucun certificat.')}</p>}
                                         </section>
                                     </div>
                                 )}
                             </div>
                             <div className="modal-footer" style={{ justifyContent: 'flex-end' }}>
-                                <button className="btn btn-primary" onClick={() => setIsModalOpen(false)}>Fermer</button>
+                                <button className="btn btn-primary" onClick={() => setIsModalOpen(false)}>{t('common.close', 'Fermer')}</button>
                             </div>
                         </motion.div>
                     </div>

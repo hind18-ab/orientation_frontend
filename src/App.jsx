@@ -30,6 +30,7 @@ import AdminSettings from './pages/Admin/AdminSettings';
 import AdminQuizzes from './pages/Admin/AdminQuizzes';
 import AdminUsers from './pages/Admin/AdminUsers';
 import { ThemeProvider } from './context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -50,6 +51,14 @@ const MainLayout = () => {
 };
 
 function App() {
+    const { i18n } = useTranslation();
+
+    React.useEffect(() => {
+        const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.dir = dir;
+        document.documentElement.lang = i18n.language;
+    }, [i18n.language]);
+
     return (
         <ThemeProvider>
             <Routes>

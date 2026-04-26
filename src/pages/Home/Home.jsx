@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, BarChart3, ShieldCheck, ArrowRight, Zap, Target, Star } from 'lucide-react';
 import heroImg from '../../assets/hero-illustration.png';
 import './Home.css';
 
 const Home = () => {
+    const { t } = useTranslation();
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -36,17 +38,17 @@ const Home = () => {
                         variants={containerVariants}
                     >
                         <motion.h1 variants={itemVariants}>
-                            Définissez votre <span className="gradient-text">Avenir</span> dès aujourd'hui.
+                            {t('home.heroTitle', "Définissez votre Avenir dès aujourd'hui.")}
                         </motion.h1>
                         <motion.p variants={itemVariants}>
-                            Grâce à notre test d'orientation, découvrez les métiers et les formations qui vous correspondent vraiment.
+                            {t('home.heroSubtitle', "Grâce à notre test d'orientation, découvrez les métiers et les formations qui vous correspondent vraiment.")}
                         </motion.p>
                         <motion.div className="hero-actions" variants={itemVariants}>
                             <Link to="/test" className="btn btn-primary btn-xl">
-                                Commencer le Test <ArrowRight size={20} />
+                                {t('home.startTest', 'Commencer le Test')} <ArrowRight size={20} />
                             </Link>
                             <Link to="/register" className="btn btn-outline btn-xl">
-                                Créer un profil
+                                {t('home.createProfile', 'Créer un profil')}
                             </Link>
                         </motion.div>
                     </motion.div>
@@ -67,8 +69,8 @@ const Home = () => {
             <section className="features-section">
                 <div className="container">
                     <div className="section-header">
-                        <h2 className="section-title">Pourquoi nous faire confiance ?</h2>
-                        <p>Une méthodologie rigoureuse pour des résultats concrets.</p>
+                        <h2 className="section-title">{t('home.whyTrustUs', 'Pourquoi nous faire confiance ?')}</h2>
+                        <p>{t('home.methodology', 'Une méthodologie rigoureuse pour des résultats concrets.')}</p>
                     </div>
 
                     <div className="features-grid">
@@ -79,8 +81,8 @@ const Home = () => {
                             <div className="icon-box purple">
                                 <Zap size={24} />
                             </div>
-                            <h3>Analyse Rapide</h3>
-                            <p>Obtenez un profil détaillé en moins de 10 minutes avec des questions optimisées.</p>
+                            <h3>{t('home.fastAnalysis', 'Analyse Rapide')}</h3>
+                            <p>{t('home.fastAnalysisDesc', 'Obtenez un profil détaillé en moins de 10 minutes avec des questions optimisées.')}</p>
                         </motion.div>
 
                         <motion.div 
@@ -90,8 +92,8 @@ const Home = () => {
                             <div className="icon-box blue">
                                 <Target size={24} />
                             </div>
-                            <h3>Précision</h3>
-                            <p>Nos analysent vos réponses pour détecter vos talents cachés.</p>
+                            <h3>{t('home.precision', 'Précision')}</h3>
+                            <p>{t('home.precisionDesc', 'Nous analysons vos réponses pour détecter vos talents cachés.')}</p>
                         </motion.div>
 
                         <motion.div 
@@ -101,8 +103,8 @@ const Home = () => {
                             <div className="icon-box green">
                                 <BarChart3 size={24} />
                             </div>
-                            <h3>Rapport Visuel</h3>
-                            <p>Visualisez vos scores par domaine avec des graphiques interactifs et clairs.</p>
+                            <h3>{t('home.visualReport', 'Rapport Visuel')}</h3>
+                            <p>{t('home.visualReportDesc', 'Visualisez vos scores par domaine avec des graphiques interactifs et clairs.')}</p>
                         </motion.div>
                     </div>
                 </div>
@@ -111,9 +113,9 @@ const Home = () => {
             <section className="cta-section">
                 <div className="container">
                     <div className="cta-card">
-                        <h2>Prêt à trouver votre voie ?</h2>
-                        <p>Rejoignez des milliers d'étudiants qui ont déjà trouvé leur chemin.</p>
-                        <Link to="/test" className="btn btn-primary btn-xl">Faire le test maintenant</Link>
+                        <h2>{t('home.readyToFindWay', 'Prêt à trouver votre voie ?')}</h2>
+                        <p>{t('home.joinThousands', "Rejoignez des milliers d'étudiants qui ont déjà trouvé leur chemin.")}</p>
+                        <Link to="/test" className="btn btn-primary btn-xl">{t('home.doTestNow', 'Faire le test maintenant')}</Link>
                     </div>
                 </div>
             </section>

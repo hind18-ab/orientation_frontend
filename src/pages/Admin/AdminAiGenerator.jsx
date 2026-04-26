@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, Save, Trash2, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './AdminAiGenerator.css';
 
 const AdminAiGenerator = () => {
+    const { t, i18n } = useTranslation();
     const [domains, setDomains] = useState([]);
     const [selectedDomain, setSelectedDomain] = useState('');
     const [questionCount, setQuestionCount] = useState(5);
@@ -11,6 +13,12 @@ const AdminAiGenerator = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [previewQuestions, setPreviewQuestions] = useState([]);
     const [message, setMessage] = useState(null);
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         fetchDomains();
@@ -37,7 +45,7 @@ const AdminAiGenerator = () => {
             });
             setPreviewQuestions(response.data.questions);
         } catch (error) {
-            setMessage({ type: 'error', text: 'Échec de la génération des questions.' });
+            setMessage({ type: 'error', text: error.response?.data?.error || t('admin.generator.errorGen', 'Échec de la génération des questions.') });
         } finally {
             setIsGenerating(false);
         }
@@ -51,10 +59,10 @@ const AdminAiGenerator = () => {
                 domain_id: selectedDomain,
                 questions: previewQuestions
             });
-            setMessage({ type: 'success', text: 'Questions enregistrées avec succès !' });
+            setMessage({ type: 'success', text: t('admin.generator.success', 'Questions enregistrées avec succès !') });
             setPreviewQuestions([]);
         } catch (error) {
-            setMessage({ type: 'error', text: "Erreur lors de l'enregistrement." });
+            setMessage({ type: 'error', text: t('admin.generator.errorSave', "Erreur lors de l'enregistrement.") });
         } finally {
             setIsSaving(false);
         }
@@ -68,26 +76,26 @@ const AdminAiGenerator = () => {
         <div className="admin-container">
             <div className="admin-header">
                 <div>
-                    <h1>Générateur IA</h1>
-                    <p>Automatisez la création de questions pour le test d'orientation.</p>
+                    <h1>{t('admin.generator.title', 'Générateur IA')}</h1>
+                    <p>{t('admin.generator.subtitle', 'Automatisez la création de questions pour le test d\'orientation.')}</p>
                 </div>
             </div>
 
             <div className="ai-generator-card">
                 <div className="generator-form">
                     <div className="form-group">
-                        <label>Domaine cible</label>
+                        <label>{t('admin.generator.targetDomain', 'Domaine cible')}</label>
                         <select 
                             value={selectedDomain} 
                             onChange={(e) => setSelectedDomain(e.target.value)}
                         >
                             {domains.map(d => (
-                                <option key={d.id} value={d.id}>{d.name}</option>
+                                <option key={d.id} value={d.id}>{getLocalizedText(d.name)}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Nombre de questions</label>
+                        <label>{t('admin.generator.questionCount', 'Nombre de questions')}</label>
                         <input 
                             type="number" 
                             min="1" 
@@ -102,7 +110,7 @@ const AdminAiGenerator = () => {
                         disabled={isGenerating}
                     >
                         {isGenerating ? <RefreshCw className="spin" size={20} /> : <Sparkles size={20} />}
-                        Générer avec IA
+                        {t('admin.generateAI', 'Générer avec IA')}
                     </button>
                 </div>
 
@@ -117,14 +125,14 @@ const AdminAiGenerator = () => {
             {previewQuestions.length > 0 && (
                 <div className="preview-container fade-in">
                     <div className="preview-header">
-                        <h2>Prévisualisation ({previewQuestions.length})</h2>
+                        <h2>{t('admin.generator.preview', 'Prévisualisation')} ({previewQuestions.length})</h2>
                         <button 
                             className="btn btn-primary" 
                             onClick={handleSave}
                             disabled={isSaving}
                         >
                             {isSaving ? <RefreshCw className="spin" size={20} /> : <Save size={20} />}
-                            Tout valider et enregistrer
+                            {t('admin.generator.saveAll', 'Tout valider et enregistrer')}
                         </button>
                     </div>
 
@@ -141,7 +149,7 @@ const AdminAiGenerator = () => {
                                     {q.options.map((opt, oIndex) => (
                                         <div key={oIndex} className={`preview-option ${opt.is_correct ? 'correct' : ''}`}>
                                             <span>{opt.text}</span>
-                                            {opt.is_correct && <span className="badge">Bonne réponse</span>}
+                                            {opt.is_correct && <span className="badge">{t('admin.generator.correctAnswer', 'Bonne réponse')}</span>}
                                         </div>
                                     ))}
                                 </div>

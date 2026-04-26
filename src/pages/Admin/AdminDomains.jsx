@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { Plus, Edit2, Trash2, BookOpen } from 'lucide-react';
 import './AdminDomains.css';
 
 const AdminDomains = () => {
+    const { t, i18n } = useTranslation();
     const [domains, setDomains] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currentDomain, setCurrentDomain] = useState({ name: '', description: '', icon: '' });
+    const [currentDomain, setCurrentDomain] = useState({ name: '', description: '', icon: '', language: i18n.language });
     const [isEditing, setIsEditing] = useState(false);
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         fetchDomains();
@@ -28,20 +36,25 @@ const AdminDomains = () => {
             }
             setIsModalOpen(false);
             fetchDomains();
-            setCurrentDomain({ name: '', description: '', icon: '' });
+            setCurrentDomain({ name: '', description: '', icon: '', language: i18n.language });
         } catch (error) {
             console.error('Error saving domain', error);
         }
     };
 
     const handleEdit = (domain) => {
-        setCurrentDomain(domain);
+        setCurrentDomain({
+            ...domain,
+            name: getLocalizedText(domain.name),
+            description: getLocalizedText(domain.description),
+            language: i18n.language
+        });
         setIsEditing(true);
         setIsModalOpen(true);
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Êtes-vous sûr de vouloir supprimer ce domaine ?')) {
+        if (window.confirm(t('common.confirmDelete', 'Êtes-vous sûr de vouloir supprimer cet élément ?'))) {
             await api.delete(`/domains/${id}`);
             fetchDomains();
         }
@@ -51,11 +64,11 @@ const AdminDomains = () => {
         <div className="admin-domains">
             <header className="admin-header">
                 <div>
-                    <h1>Gestion des Domaines</h1>
-                    <p>Définissez les catégories d'orientation.</p>
+                    <h1>{t('admin.management.domains', 'Gestion des Domaines')}</h1>
+                    <p>{t('admin.management.domainsSubtitle', "Définissez les catégories d'orientation")}.</p>
                 </div>
-                <button className="btn btn-primary" onClick={() => { setIsEditing(false); setIsModalOpen(true); }}>
-                    <Plus size={20} /> Ajouter un Domaine
+                <button className="btn btn-primary" onClick={() => { setIsEditing(false); setCurrentDomain({ name: '', description: '', icon: '', language: i18n.language }); setIsModalOpen(true); }}>
+                    <Plus size={20} /> {t('admin.management.addDomain', 'Ajouter un Domaine')}
                 </button>
             </header>
 
@@ -64,15 +77,15 @@ const AdminDomains = () => {
                     <div key={domain.id} className="domain-card card">
                         <div className="domain-info">
                             <BookOpen size={24} className="icon" />
-                            <h3>{domain.name}</h3>
+                            <h3>{getLocalizedText(domain.name)}</h3>
                         </div>
-                        <p>{domain.description}</p>
+                        <p>{getLocalizedText(domain.description)}</p>
                         <div className="card-actions">
                             <button className="btn btn-outline btn-sm" onClick={() => handleEdit(domain)}>
-                                <Edit2 size={16} /> Modifier
+                                <Edit2 size={16} /> {t('common.edit', 'Modifier')}
                             </button>
                             <button className="btn btn-outline btn-sm btn-danger" onClick={() => handleDelete(domain.id)}>
-                                <Trash2 size={16} /> Supprimer
+                                <Trash2 size={16} /> {t('common.delete', 'Supprimer')}
                             </button>
                         </div>
                     </div>
@@ -82,29 +95,30 @@ const AdminDomains = () => {
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal card">
-                        <h2>{isEditing ? 'Modifier le domaine' : 'Ajouter un domaine'}</h2>
+                        <h2>{isEditing ? t('common.edit', 'Modifier') : t('common.add', 'Ajouter')}</h2>
                         <form onSubmit={handleSave}>
                             <div className="input-group">
-                                <label>Nom du domaine</label>
+                                <label>{t('admin.domains', 'Domaine')}</label>
                                     <input 
                                         type="text" 
                                         value={currentDomain.name} 
                                         onChange={(e) => setCurrentDomain({...currentDomain, name: e.target.value})} 
-                                        placeholder="ex: Technologies de l'information"
+                                        placeholder={t('admin.domains', 'Domaine')}
                                         required 
                                     />
                             </div>
                             <div className="input-group">
-                                <label>Description</label>
+                                <label>{t('common.description', 'Description')}</label>
                                 <textarea 
                                     value={currentDomain.description} 
                                     onChange={(e) => setCurrentDomain({...currentDomain, description: e.target.value})} 
                                     rows="4"
                                 ></textarea>
                             </div>
+
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>Annuler</button>
-                                <button type="submit" className="btn btn-primary">Enregistrer</button>
+                                <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>{t('common.cancel', 'Annuler')}</button>
+                                <button type="submit" className="btn btn-primary">{t('common.save', 'Enregistrer')}</button>
                             </div>
                         </form>
                     </div>

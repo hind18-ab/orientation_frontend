@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar, Globe } from 'lucide-react';
+import LanguageSwitcher from '../LanguageSwitcher';
 import './Navbar.css';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -25,18 +28,19 @@ const Navbar = () => {
                         Orientation
                     </Link>
                     <div className="nav-links">
-                        <Link to="/" className="nav-link">Accueil</Link>
-                        <Link to="/formations" className="nav-link">Formations</Link>
+                        <Link to="/" className="nav-link">{t('nav.home', 'Accueil')}</Link>
+                        <Link to="/formations" className="nav-link">{t('nav.formations', 'Formations')}</Link>
                         {user && (
                             <>
-                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                                <Link to="/test" className="nav-link">Passer le Test</Link>
+                                <Link to="/dashboard" className="nav-link">{t('nav.dashboard', 'Dashboard')}</Link>
+                                <Link to="/test" className="nav-link">{t('nav.test', 'Passer le Test')}</Link>
                             </>
                         )}
                     </div>
                 </div>
                 
                 <div className="nav-right">
+                    <LanguageSwitcher />
                     <button className="theme-toggle" onClick={toggleTheme} title="Changer de thème">
                         {theme === 'light' ? <MoonStar size={20} /> : <Sun size={20} />}
                     </button>
@@ -45,7 +49,7 @@ const Navbar = () => {
                         <div className="user-section">
                             {user.role === 'admin' && (
                                 <Link to="/admin" className="nav-link admin-badge">
-                                    <Settings size={14} /> Admin
+                                    <Settings size={14} /> {t('nav.admin', 'Admin')}
                                 </Link>
                             )}
                             <div className="user-menu" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
@@ -60,13 +64,13 @@ const Navbar = () => {
                                         </div>
                                         <hr />
                                         <Link to="/dashboard" onClick={() => setIsDropdownOpen(false)}>
-                                            <LayoutDashboard size={16} /> Dashboard
+                                            <LayoutDashboard size={16} /> {t('nav.dashboard', 'Dashboard')}
                                         </Link>
                                         <Link to="/profile" onClick={() => setIsDropdownOpen(false)}>
-                                            <User size={16} /> Mon Profil
+                                            <User size={16} /> {t('nav.profile', 'Mon Profil')}
                                         </Link>
                                         <button onClick={handleLogout} className="logout-btn">
-                                            <LogOut size={16} /> Déconnexion
+                                            <LogOut size={16} /> {t('nav.logout', 'Déconnexion')}
                                         </button>
                                     </div>
                                 )}
@@ -74,8 +78,8 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div className="auth-btns">
-                            <Link to="/login" className="btn btn-outline btn-sm">Connexion</Link>
-                            <Link to="/register" className="btn btn-primary btn-sm">S'inscrire</Link>
+                            <Link to="/login" className="btn btn-outline btn-sm">{t('auth.login', 'Connexion')}</Link>
+                            <Link to="/register" className="btn btn-primary btn-sm">{t('auth.register', "S'inscrire")}</Link>
                         </div>
                     )}
                 </div>

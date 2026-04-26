@@ -10,9 +10,14 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
+    const lang = localStorage.getItem('i18nextLng') || 'fr';
+    
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    // Set standard language header
+    config.headers['Accept-Language'] = lang;
+    
     return config;
 });
 

@@ -1,0 +1,129 @@
+.language-switcher {
+    position: relative;
+    display: inline-block;
+    margin: 0 10px;
+    z-index: 100;
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary);
+}
+
+.lang-code {
+    font-weight: 500;
+}
+
+.lang-menu-enhanced {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 320px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1001;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+}
+
+html[dir="rtl"] .lang-menu-enhanced {
+    right: auto;
+    left: 0;
+}
+
+.lang-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--background);
+}
+
+.lang-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.lang-list {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.lang-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: background 0.2s ease;
+}
+
+.lang-list li:hover {
+    background: var(--surface-hover);
+}
+
+.lang-list li.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    font-weight: 600;
+}
+
+.lang-flag {
+    font-size: 18px;
+}
+
+.lang-name {
+    flex-grow: 1;
+}
+
+.check-icon {
+    color: #10b981;
+}
+
+.lang-info-box {
+    margin: 0 16px 16px 16px;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.lang-info-box p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.lang-success-msg {
+    margin: 0 16px 16px 16px;
+    padding: 10px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-out;
+}

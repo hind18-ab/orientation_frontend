@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PlayCircle, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import api from '../../api/axios';
 
 const CoursesList = () => {
@@ -9,6 +10,13 @@ const CoursesList = () => {
     const [courses, setCourses] = useState([]);
     const [formation, setFormation] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { t, i18n } = useTranslation();
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,8 +42,8 @@ const CoursesList = () => {
         <div className="container courses-page" style={{ padding: '4rem 1rem' }}>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-header">
                 <Link to="/formations" style={{ color: '#666', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>&larr; Retour aux formations</Link>
-                <h1 className="section-title">Cours: {formation?.title}</h1>
-                <p>{formation?.description}</p>
+                <h1 className="section-title">Cours: {getLocalizedText(formation?.title)}</h1>
+                <p>{getLocalizedText(formation?.description)}</p>
             </motion.div>
 
             <div className="courses-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem', marginTop: '2rem' }}>
@@ -49,8 +57,8 @@ const CoursesList = () => {
                         style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                     >
                         <div>
-                            <h3>{c.title}</h3>
-                            <p style={{ color: '#666', margin: '0.5rem 0' }}>{c.description}</p>
+                            <h3>{getLocalizedText(c.title)}</h3>
+                            <p style={{ color: '#666', margin: '0.5rem 0' }}>{getLocalizedText(c.description)}</p>
                         </div>
                         <Link to={`/courses/${c.id}/lessons`} className="btn btn-outline">
                             <PlayCircle size={18} style={{ marginRight: '0.5rem' }} /> Commencer

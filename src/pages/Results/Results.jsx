@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import { useTranslation } from 'react-i18next';
 import { Radar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -25,6 +26,13 @@ ChartJS.register(
 );
 
 const Results = () => {
+    const { t, i18n } = useTranslation();
+
+    const getLocalizedText = (field) => {
+        if (!field) return '';
+        if (typeof field === 'string') return field;
+        return field[i18n.language] || field['fr'] || field['ar'] || field['en'] || '';
+    };
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formations, setFormations] = useState([]);
@@ -49,13 +57,13 @@ const Results = () => {
         }
     }, [result]);
 
-    if (loading) return <div className="loading">Chargement de vos résultats...</div>;
+    if (loading) return <div className="loading">{t('results.loading', 'Chargement de vos résultats...')}</div>;
 
     if (!result) return (
         <div className="no-result container">
-            <h2>Aucun résultat trouvé</h2>
-            <p>Il semble que vous n'ayez pas encore passé le test.</p>
-            <Link to="/test" className="btn btn-primary">Passer le test maintenant</Link>
+            <h2>{t('results.noResult', 'Aucun résultat trouvé')}</h2>
+            <p>{t('results.noResultDesc', "Il semble que vous n'ayez pas encore passé le test.")}</p>
+            <Link to="/test" className="btn btn-primary">{t('results.passTestNow', 'Passer le test maintenant')}</Link>
         </div>
     );
 
@@ -63,7 +71,7 @@ const Results = () => {
         labels: Object.keys(result.scores),
         datasets: [
             {
-                label: 'Votre Score',
+                label: t('results.yourScore', 'Votre Score'),
                 data: Object.values(result.scores),
                 backgroundColor: 'rgba(37, 99, 235, 0.2)',
                 borderColor: 'rgba(37, 99, 235, 1)',
@@ -95,19 +103,19 @@ const Results = () => {
             <div className="container results-container">
                 <header className="results-header">
                     <div className="award-icon"><Award size={48} /></div>
-                    <h1>Félicitations !</h1>
-                    <p>Voici votre profil d'orientation basé sur vos réponses.</p>
+                    <h1>{t('results.congratulations', 'Félicitations !')}</h1>
+                    <p>{t('results.profileSubtitle', 'Voici votre profil d\'orientation basé sur vos réponses.')}</p>
                 </header>
 
                 <div className="results-grid">
                     <div className="primary-result card">
-                        <h3>Domaine Dominant</h3>
-                        <div className="domain-badge">{result.primary_domain.name}</div>
-                        <p className="domain-description">{result.primary_domain.description || "Vous avez une forte affinité pour ce domaine, ce qui indique des aptitudes et un intérêt marqué pour les activités qui y sont liées."}</p>
+                        <h3>{t('results.dominantDomain', 'Domaine Dominant')}</h3>
+                        <div className="domain-badge">{getLocalizedText(result.primary_domain.name)}</div>
+                        <p className="domain-description">{getLocalizedText(result.primary_domain.description) || t('results.domainAffinity', "Vous avez une forte affinité pour ce domaine, ce qui indique des aptitudes et un intérêt marqué pour les activités qui y sont liées.")}</p>
                     </div>
 
                     <div className="chart-section card">
-                        <h3>Visualisation de votre profil</h3>
+                        <h3>{t('results.visualProfile', 'Visualisation de votre profil')}</h3>
                         <div className="chart-container">
                             <Radar data={chartData} options={chartOptions} />
                         </div>
@@ -117,9 +125,9 @@ const Results = () => {
                 <div className="recommended-formations card">
                     <div className="section-header">
                         <BookOpen className="section-icon" size={24} />
-                        <h3>Formations Recommandées</h3>
+                        <h3>{t('results.recommendedFormations', 'Formations Recommandées')}</h3>
                     </div>
-                    <p className="section-subtitle">Basé sur votre affinité pour le domaine : <strong>{result.primary_domain.name}</strong></p>
+                    <p className="section-subtitle">{t('results.basedOnAffinity', 'Basé sur votre affinité pour le domaine :')} <strong>{getLocalizedText(result.primary_domain.name)}</strong></p>
                     
                     {formations.length > 0 ? (
                         <div className="formations-grid">
@@ -129,13 +137,13 @@ const Results = () => {
                         </div>
                     ) : (
                         <div className="no-formations">
-                            <p>Aucune formation spécifique n'est actuellement répertoriée pour ce domaine.</p>
+                            <p>{t('results.noFormations', 'Aucune formation spécifique n\'est actuellement répertoriée pour ce domaine.')}</p>
                         </div>
                     )}
                 </div>
 
                 <div className="detailed-scores card">
-                    <h3>Scores par domaine</h3>
+                    <h3>{t('results.scoresByDomain', 'Scores par domaine')}</h3>
                     <div className="scores-list">
                         {Object.entries(result.scores).map(([domain, score]) => (
                             <div key={domain} className="score-item">
@@ -151,13 +159,13 @@ const Results = () => {
 
                 <div className="results-actions">
                     <button className="btn btn-outline" onClick={() => window.print()}>
-                        <Download size={20} /> Télécharger PDF
+                        <Download size={20} /> {t('results.downloadPDF', 'Télécharger PDF')}
                     </button>
                     <button className="btn btn-outline">
-                        <Share2 size={20} /> Partager
+                        <Share2 size={20} /> {t('results.share', 'Partager')}
                     </button>
                     <Link to="/test" className="btn btn-primary">
-                        <RefreshCw size={20} /> Refaire le test
+                        <RefreshCw size={20} /> {t('results.retakeTest', 'Refaire le test')}
                     </Link>
                 </div>
             </div>
