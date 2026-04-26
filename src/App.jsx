@@ -16,6 +16,7 @@ import AdminRoute from './components/AdminRoute';
 import FormationsList from './pages/Courses/FormationsList';
 import CoursesList from './pages/Courses/CoursesList';
 import LessonView from './pages/Courses/LessonView';
+import QuizView from './pages/Courses/QuizView';
 
 // Admin Pages
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -26,6 +27,7 @@ import AdminCourses from './pages/Admin/AdminCourses';
 import AdminLessons from './pages/Admin/AdminLessons';
 import AdminAiGenerator from './pages/Admin/AdminAiGenerator';
 import AdminSettings from './pages/Admin/AdminSettings';
+import AdminQuizzes from './pages/Admin/AdminQuizzes';
 import AdminUsers from './pages/Admin/AdminUsers';
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -61,6 +63,7 @@ function App() {
                     
                     {/* User Protected Routes */}
                     <Route element={<ProtectedRoute />}>
+                        <Route path="/formations/:formationId/quiz" element={<QuizView />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/test" element={<Test />} />
                         <Route path="/results" element={<Results />} />
@@ -75,6 +78,7 @@ function App() {
                         <Route path="/admin/formations" element={<AdminFormations />} />
                         <Route path="/admin/courses" element={<AdminCourses />} />
                         <Route path="/admin/lessons" element={<AdminLessons />} />
+                        <Route path="/admin/quizzes" element={<AdminQuizzes />} />
                         <Route path="/admin/ai-generator" element={<AdminAiGenerator />} />
                         <Route path="/admin/settings" element={<AdminSettings />} />
                         <Route path="/admin/users" element={<AdminUsers />} />
