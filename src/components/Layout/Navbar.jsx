@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar, Globe } from 'lucide-react';
-import LanguageSwitcher from '../LanguageSwitcher';
+import LanguageSwitcher from '../LanguageSwitcher.jsx';
 import './Navbar.css';
 
 const Navbar = () => {
