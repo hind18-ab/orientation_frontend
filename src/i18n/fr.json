@@ -273,6 +273,26 @@
     "backend": "Backend",
     "logic": "Logique & API",
     "database": "Base de Données",
-    "storage": "MySQL / Storage"
+    "storage": "MySQL / Storage",
+    "apiRest": "API REST",
+    "videoTitle": "Vidéo de la leçon"
+  },
+  "footer": {
+    "platform": "Plateforme",
+    "howItWorks": "Comment ça marche",
+    "test": "Le Test",
+    "partnerships": "Partenariats",
+    "support": "Support",
+    "help": "Aide",
+    "privacy": "Confidentialité",
+    "contact": "Contact",
+    "rights": "Tous droits réservés."
+  },
+  "courses": {
+    "title": "Cours",
+    "backToFormations": "Retour aux formations",
+    "noCourses": "Aucun cours disponible pour le moment.",
+    "start": "Commencer",
+    "loading": "Chargement..."
   }
 }

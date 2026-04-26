@@ -273,6 +273,26 @@
     "backend": "الواجهة الخلفية",
     "logic": "المنطق و API",
     "database": "قاعدة البيانات",
-    "storage": "MySQL / تخزين"
+    "storage": "MySQL / تخزين",
+    "apiRest": "واجهة برمجة التطبيقات (API REST)",
+    "videoTitle": "فيديو الدرس"
+  },
+  "footer": {
+    "platform": "المنصة",
+    "howItWorks": "كيف يعمل",
+    "test": "الاختبار",
+    "partnerships": "الشراكات",
+    "support": "الدعم",
+    "help": "المساعدة",
+    "privacy": "الخصوصية",
+    "contact": "اتصل بنا",
+    "rights": "جميع الحقوق محفوظة."
+  },
+  "courses": {
+    "title": "الكورسات",
+    "backToFormations": "العودة إلى الدورات",
+    "noCourses": "لا توجد كورسات متاحة حالياً.",
+    "start": "ابدأ",
+    "loading": "جاري التحميل..."
   }
 }

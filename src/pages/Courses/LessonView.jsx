@@ -114,7 +114,7 @@ const LessonView = () => {
                 </div>
                 <div className="schema-arrow">
                     <div className="arrow-line"></div>
-                    <div className="arrow-text">API REST</div>
+                    <div className="arrow-text">{t('lessons.apiRest', 'API REST')}</div>
                 </div>
                 <div className="schema-box backend">
                     <Server size={32} />
@@ -451,7 +451,7 @@ const LessonView = () => {
                                                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                                 allowFullScreen
-                                                title="Lesson Video"
+                                                title={t('lessons.videoTitle', 'Lesson Video')}
                                             ></iframe>
                                         </div>
                                     </div>

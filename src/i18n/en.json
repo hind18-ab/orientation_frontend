@@ -273,6 +273,26 @@
     "backend": "Backend",
     "logic": "Logic & API",
     "database": "Database",
-    "storage": "MySQL / Storage"
+    "storage": "MySQL / Storage",
+    "apiRest": "REST API",
+    "videoTitle": "Lesson Video"
+  },
+  "footer": {
+    "platform": "Platform",
+    "howItWorks": "How it works",
+    "test": "The Test",
+    "partnerships": "Partnerships",
+    "support": "Support",
+    "help": "Help",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "courses": {
+    "title": "Courses",
+    "backToFormations": "Back to formations",
+    "noCourses": "No courses available at the moment.",
+    "start": "Start",
+    "loading": "Loading..."
   }
 }
