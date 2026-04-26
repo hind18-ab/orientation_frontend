@@ -63,12 +63,19 @@
 
 .activity-item {
     padding: 16px; 
-    background: var(--background); 
+    background: var(--surface); 
     border-radius: 12px; 
     display: flex; 
     justify-content: space-between; 
     align-items: center;
     border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.activity-item:hover {
+    border-color: var(--primary);
+    background: var(--surface-hover, var(--surface));
+    transform: scale(1.02);
 }
 
 .activity-info-title {
@@ -87,25 +94,36 @@
 
 .result-item {
     padding: 16px; 
-    background: var(--background); 
-    border-radius: 12px;
+    background: var(--surface); 
+    border-radius: 16px;
     border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.result-item:hover {
+    background: var(--surface-hover, var(--surface));
+    border-color: var(--primary);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
 }
 
 .result-header {
     display: flex; 
     justify-content: space-between; 
+    align-items: flex-start;
+    gap: 12px;
     margin-bottom: 8px;
 }
 
 .result-domain-badge {
     font-size: 11px; 
     color: var(--primary); 
-    background: var(--surface); 
-    padding: 2px 8px; 
-    border-radius: 6px; 
+    background: rgba(99, 102, 241, 0.1); 
+    padding: 4px 10px; 
+    border-radius: 8px; 
     font-weight: 700;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    white-space: nowrap;
 }
 
 @media (max-width: 1024px) {

@@ -25,4 +25,10 @@ jobs:
     - name: Build project
       run: npm run build
       env:
-        CI: false # Empêche le build d'échouer à cause de simples warnings
+        CI: false
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Empêche le build d'échouer à cause de simples warnings
