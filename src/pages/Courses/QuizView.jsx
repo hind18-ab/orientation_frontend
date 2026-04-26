@@ -85,9 +85,28 @@ const QuizView = () => {
                         Score: {result.score} / {result.total_questions} questions correctes
                     </p>
 
-                    <button onClick={() => navigate('/formations')} className="btn-submit-quiz" style={{ maxWidth: '300px', margin: '0 auto' }}>
-                        Retour aux formations
-                    </button>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                        <button onClick={() => navigate('/formations')} className="btn-submit-quiz" style={{ maxWidth: '200px', margin: '0' }}>
+                            Retour aux formations
+                        </button>
+                        
+                        {result.passed && (
+                            <button 
+                                onClick={async () => {
+                                    try {
+                                        const res = await api.post(`/formations/${formationId}/certificate/generate`);
+                                        window.location.href = res.data.download_url;
+                                    } catch (err) {
+                                        alert(err.response?.data?.message || 'Erreur lors de la génération du certificat.');
+                                    }
+                                }}
+                                className="btn-submit-quiz" 
+                                style={{ maxWidth: '200px', margin: '0', background: '#10b981' }}
+                            >
+                                Télécharger le Certificat
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         );

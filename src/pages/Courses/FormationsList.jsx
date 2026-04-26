@@ -87,8 +87,7 @@ const FormationsList = () => {
                                     onClick={async () => {
                                         try {
                                             const res = await api.post(`/formations/${f.id}/certificate/generate`);
-                                            const certId = res.data.certificate.id;
-                                            window.open(`http://localhost:8000/api/certificates/${certId}/download`, '_blank');
+                                            window.location.href = res.data.download_url;
                                         } catch (err) {
                                             alert(err.response?.data?.message || 'Erreur lors de la génération du certificat.');
                                         }
