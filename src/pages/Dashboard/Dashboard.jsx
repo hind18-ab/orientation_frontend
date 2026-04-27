@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { 
-    Calendar, ArrowRight, Award, Clock, 
-    ChevronRight, BookOpen, User as UserIcon,
-    TrendingUp, LogOut, LayoutGrid, Star
+    Layout, 
+    CheckCircle, 
+    ArrowRight,
+    Award
 } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -19,7 +20,7 @@ import {
     Legend,
     ArcElement
 } from 'chart.js';
-import { Radar, Doughnut } from 'react-chartjs-2';
+import { Radar } from 'react-chartjs-2';
 import './Dashboard.css';
 
 ChartJS.register(

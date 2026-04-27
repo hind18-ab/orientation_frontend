@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import { useTranslation } from 'react-i18next';
-import { Users, Trash2, Mail, Calendar, Search, Eye, GraduationCap, Award, FileText, X } from 'lucide-react';
+import { Trash2, Mail, Calendar, Search, Eye, GraduationCap, Award, FileText, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AdminUsers.css';
 

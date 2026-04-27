@@ -13,15 +13,15 @@ const Footer = () => {
                 </div>
                 <div className="footer-links">
                     <h4>{t('footer.platform', 'Plateforme')}</h4>
-                    <a href="#">{t('footer.howItWorks', 'Comment ça marche')}</a>
-                    <a href="#">{t('footer.test', 'Le Test')}</a>
-                    <a href="#">{t('footer.partnerships', 'Partenariats')}</a>
+                    <a href="#!">{t('footer.howItWorks', 'Comment ça marche')}</a>
+                    <a href="#!">{t('footer.test', 'Le Test')}</a>
+                    <a href="#!">{t('footer.partnerships', 'Partenariats')}</a>
                 </div>
                 <div className="footer-links">
                     <h4>{t('footer.support', 'Support')}</h4>
-                    <a href="#">{t('footer.help', 'Aide')}</a>
-                    <a href="#">{t('footer.privacy', 'Confidentialité')}</a>
-                    <a href="#">{t('footer.contact', 'Contact')}</a>
+                    <a href="#!">{t('footer.help', 'Aide')}</a>
+                    <a href="#!">{t('footer.privacy', 'Confidentialité')}</a>
+                    <a href="#!">{t('footer.contact', 'Contact')}</a>
                 </div>
             </div>
             <div className="footer-bottom">

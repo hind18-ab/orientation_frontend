@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
 import { useTranslation } from 'react-i18next';
-import { User, Mail, Lock, Save, Key, AlertCircle, CheckCircle, Globe } from 'lucide-react';
+import { User, Mail, Shield, Camera, Save, Key, AlertCircle, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Profile.css';
 
 const Profile = () => {
-    const { user, updateUser } = useAuth();
+    const { user, updateProfile, changePassword } = useAuth();
     const { t, i18n } = useTranslation();
     
     // Profile info state
@@ -30,8 +30,7 @@ const Profile = () => {
         setProfileMessage({ type: '', text: '' });
 
         try {
-            const response = await api.put('/user/profile', { name, email, preferred_language: preferredLanguage });
-            updateUser(response.data.user);
+            await updateProfile({ name, email, preferred_language: preferredLanguage });
             
             if (i18n.language !== preferredLanguage) {
                 i18n.changeLanguage(preferredLanguage);

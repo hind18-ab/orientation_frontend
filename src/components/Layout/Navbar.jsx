@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar, Globe } from 'lucide-react';
+import { LogOut, LayoutDashboard, Settings, User, Sun, MoonStar } from 'lucide-react';
 import LanguageSwitcher from '../LanguageSwitcher.jsx';
 import './Navbar.css';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 

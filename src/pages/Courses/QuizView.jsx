@@ -20,24 +20,23 @@ const QuizView = () => {
     const [result, setResult] = useState(null);
 
     useEffect(() => {
-        fetchQuiz();
-    }, [formationId]);
-
-    const fetchQuiz = async () => {
-        try {
-            // assuming token is attached via interceptor
-            const res = await api.get(`/formations/${formationId}/quiz`);
-            setQuiz(res.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching quiz:', error);
-            if (error.response && error.response.status === 404) {
-                alert(t('quiz.noneForFormation', 'Aucun quiz trouvé pour cette formation.'));
-                navigate('/formations');
+        const fetchQuiz = async () => {
+            try {
+                // assuming token is attached via interceptor
+                const res = await api.get(`/formations/${formationId}/quiz`);
+                setQuiz(res.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching quiz:', error);
+                if (error.response && error.response.status === 404) {
+                    alert(t('quiz.noneForFormation', 'Aucun quiz trouvé pour cette formation.'));
+                    navigate('/formations');
+                }
+                setLoading(false);
             }
-            setLoading(false);
-        }
-    };
+        };
+        fetchQuiz();
+    }, [formationId, navigate, t]);
 
     const handleOptionSelect = (questionId, answerId) => {
         setAnswers({
