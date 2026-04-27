@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
 import { useTranslation } from 'react-i18next';
-import { User, Mail, Shield, Camera, Save, Key, AlertCircle, CheckCircle } from 'lucide-react';
+import { User, Mail, Shield, Camera, Save, Key, AlertCircle, CheckCircle, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Profile.css';
 

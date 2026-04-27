@@ -8,7 +8,12 @@ import {
     Layout, 
     CheckCircle, 
     ArrowRight,
-    Award
+    Award,
+    Star,
+    LayoutGrid,
+    User as UserIcon,
+    Calendar,
+    LogOut
 } from 'lucide-react';
 import {
     Chart as ChartJS,

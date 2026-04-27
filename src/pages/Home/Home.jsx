@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, Target, Zap, CheckCircle } from 'lucide-react';
+import { Sparkles, Target, Zap, CheckCircle, ArrowRight, BarChart3 } from 'lucide-react';
 import heroImg from '../../assets/hero-illustration.png';
 import './Home.css';
 
