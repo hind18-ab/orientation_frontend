@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
 import { useTranslation } from 'react-i18next';
-import { User, Mail, Shield, Camera, Save, Key, AlertCircle, CheckCircle, Lock } from 'lucide-react';
+import { User, Mail, Save, Key, AlertCircle, CheckCircle, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Profile.css';
 
 const Profile = () => {
-    const { user, updateProfile, changePassword } = useAuth();
+    const { user, updateProfile } = useAuth();
     const { t, i18n } = useTranslation();
     
     // Profile info state
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
-    const [preferredLanguage, setPreferredLanguage] = useState(user?.preferred_language || 'fr');
+    const [preferredLanguage] = useState(user?.preferred_language || 'fr');
     const [profileLoading, setProfileLoading] = useState(false);
     const [profileMessage, setProfileMessage] = useState({ type: '', text: '' });
 
@@ -58,7 +58,7 @@ const Profile = () => {
         setPasswordMessage({ type: '', text: '' });
 
         try {
-            const response = await api.put('/user/password', {
+            await api.put('/user/password', {
                 current_password: currentPassword,
                 password: newPassword,
                 password_confirmation: confirmPassword
